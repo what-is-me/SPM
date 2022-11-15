@@ -1,14 +1,17 @@
 package org.spm.spm.bean;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Message {
     private String name;
     private String msg;
-    @JsonFormat(pattern = "yyyy年MM月dd日HH时mm分ss秒", locale = "zh", timezone = "GMT+8")
     private Date time;
 }
