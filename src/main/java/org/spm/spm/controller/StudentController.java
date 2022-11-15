@@ -1,11 +1,9 @@
 package org.spm.spm.controller;
 
-import com.google.gson.Gson;
 import org.spm.spm.bean.Student;
 import org.spm.spm.mapper.StudentMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,25 +14,25 @@ public class StudentController {
     @Autowired
     private StudentMapper studentMapper;
 
-    @GetMapping(path = "/student-login")
+    @RequestMapping(path = "/student-login")
     public String login(HttpServletRequest req) {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
-        if (email == null || "".equals(email) || password == null || "".equals(password)) return "";
+        if (email == null || "".equals(email) || password == null || "".equals(password)) return "false";
         Student stu, query = new Student();
         query.setEmail(email);
         List<Student> res = studentMapper.find(query);
         if (res.size() > 0)
             stu = res.get(0);
-        else return "";
+        else return "false";
         if (stu.getPassword().equals(password)) {
             req.getSession().setAttribute("user", stu);
             System.out.println(stu);
-            return new Gson().toJson(stu);
-        } else return "";
+            return "true";
+        } else return "false";
     }
 
-    @PostMapping(path = "/sign-in")
+    @RequestMapping(path = "/sign-in")
     public String signIn(HttpServletRequest req) {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
@@ -55,7 +53,7 @@ public class StudentController {
         return "true";
     }
 
-    @PostMapping(path = "/select-course")
+    @RequestMapping(path = "/select-course")
     public String selectCourse(HttpServletRequest req) {
         Student stu = ((Student) req.getSession().getAttribute("user"));
         stu.setCourseId(req.getParameter("courseId"));
