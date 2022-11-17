@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>留言板</title>
+    <link type="text/css" rel="stylesheet" href="static/css/style.css">
+    <script
+            src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <style>
+        .background {
+            height: fit-content;
+            background-color: #09e6a4;
+            width: 1040px;
+            padding: 10px;
+        }
+
+        .header {
+            height: 80px;
+            width: 1200px;
+            margin: auto;
+        }
+
+        .user {
+            text-align: left;
+            text-size-adjust: 10 sp;
+            text-decoration-color: black;
+        }
+
+        .time {
+            text-align: right;
+            text-size-adjust: 10 sp;
+            text-decoration-color: black;
+            float: right;
+        }
+
+        .space {
+            height: 50 dp;
+            color: #00000000;
+        }
+
+        .message {
+            width: 1000px;
+            height: fit-content;
+            line-height: 30px;
+            padding: 1px;
+            font-size: 15 dp;
+            background-color: rgba(91, 233, 91, 0.625);
+            white-space: pre-wrap;
+            text-decoration-color: black;
+            text-align: left;
+            border: 1px solid rgb(4, 85, 4);
+        }
+
+        .oneblock {
+            height: fit-content;
+            background-color: #76f0cc;
+            width: 1000px;
+            padding: 5px;
+            border: 1px solid rgb(4, 85, 4);
+        }
+
+        #newMessage {
+            height: fit-content;
+            width: fit-content;
+        }
+
+        #lowerpage {
+            height: fit-content;
+            width: fit-content;
+            float: left;
+        }
+
+        .page {
+            text-align: right;
+            text-size-adjust: 10 sp;
+            text-decoration-color: black;
+            float: ceter;
+        }
+
+        #upperpage {
+            height: fit-content;
+            width: fit-content;
+            float: right;
+        }
+
+        body {
+            overflow: scroll;
+        }
+    </style>
+    <script>
+        var page = 0;
+
+        var messages = []
+        var urlget = "message?page=";
+        var urlpos = "message?page";
+
+        function getmessages() {
+            $.get(urlget + page, function (data, status) {
+                if (status !== "success") {
+                    console.log("服务器或网络错误");
+                    return;
+                }
+                messages = JSON.parse(data);
+                render();
+            });
+        }
+
+        function postmessage() {
+            let str = document.getElementById("mess").value;//$("#mess").val();
+            console.log(str);
+            if (str.length === 0) {
+                console.log("输入栏不能空");
+                return;
+            }
+            $.post(urlpos, {
+                msg: str
+            }, function (data, status) {
+                console.log(data + "\n" + status);
+                if (status !== "success") {
+                    console.log("服务器或网络错误");
+                    return;
+                }
+                if (data === "true") {
+                    console.log("插入成功");
+                    document.getElementById("mess").innerText = "";
+                } else {
+                    console.log(data);
+                }
+            })
+        }
+
+        function lowerpage() {
+            if (page === 0) {
+                console.log("已经是第一页");
+                return;
+            }
+            page = page - 1;
+            getmessages();
+        }
+
+        function upperpage() {
+            page = page + 1;
+            getmessages();
+        }
+
+        function render() {
+            var str = "";
+            if (messages.length == 0) {
+                console.log("没有更多新信息");
+                page = document.getElementById("page").innerHTML - 1;
+                return;
+            }
+            messages.forEach((item) => {
+                str += `
+                        <div class="oneblock">
+                            <span class="user">${item.name}</span><br>
+                            <div class="message">${item.msg}</div>
+                            <span class="time">${item.time}</span><br>
+                        </div>
+                        `;
+
+            });
+            //console.log(str);
+            section = document.getElementById("show");
+            section.innerHTML = str;
+            document.getElementById("page").innerHTML = (page + 1);
+        }
+    </script>
+</head>
+
+<body>
+
+<div class="header">
+    <img class="logo_img" alt="" src="static/img/usst1.jpg">
+    <span class="wel_word">在线学习平台</span>
+</div>
+
+<div class="background">
+    <section id="show"></section>
+
+
+    <div class="oneblock">
+        <center>
+            <textarea id="mess" name="留言" cols="100" rows="10"></textarea>
+            <button id="newMessage" onclick="postmessage()">留言</button>
+        </center>
+
+    </div>
+
+    <div class="oneblock">
+        <center>
+            <button id="lowerpage" onclick="lowerpage()">上一页</button>
+            <span>第</span>
+            <span id="page">1</span>
+            <span>页</span>
+            <button id="upperpage" onclick="upperpage()">下一页</button>
+        </center>
+    </div>
+
+</div>
+
+<script>
+    render();
+    getmessages();
+</script>
+</body>
+<html>

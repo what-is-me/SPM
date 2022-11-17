@@ -16,7 +16,7 @@ public interface StudentMapper {
     @Update("update spm.student set courseId=#{courseId}, teacherAgreed=#{teacherAgreed} where email like #{email};")
     void update(Student student);
 
-    @Insert("insert into spm.student values(#{email}, #{password}, #{name}, null, null);")
+    @Insert("insert into spm.student (email, password, name)values(#{email}, #{password}, #{name});")
     void insert(Student student);
 
     @Select("select * from spm.student;")
