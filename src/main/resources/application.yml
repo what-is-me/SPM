@@ -14,3 +14,5 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/spm?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
     username: root
     password: root
+file:
+  url: E:/desktop/files/school-work/ProjectManagement/SPM/files
