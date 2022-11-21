@@ -16,3 +16,4 @@ spring:
     password: root
 file:
   url: E:/desktop/files/school-work/ProjectManagement/SPM/files
+prefix: http://localhost:8080

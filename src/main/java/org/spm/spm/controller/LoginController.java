@@ -29,14 +29,14 @@ public class LoginController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "email", dataTypeClass = String.class, value = "用户邮箱", required = true, paramType = "query"),
             @ApiImplicitParam(name = "password", dataTypeClass = String.class, value = "密码", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "type", dataTypeClass = String.class, value = "身份('teacher'表示老师，否则为学生)", required = true, paramType = "query", defaultValue = "student")
+            @ApiImplicitParam(name = "type", dataTypeClass = String.class, value = "身份('teacher'表示老师，否则为学生)", paramType = "query", defaultValue = "student")
     })
     @ApiOperation(value = "是否登录成功", notes = "成功返回true，否则返回失败原因")
     @RequestMapping(path = "/login", method = {RequestMethod.GET, RequestMethod.POST})
     public String login(
             @RequestParam String email,
             @RequestParam String password,
-            @RequestParam String type,
+            @RequestParam(value = "type", required = false) String type,
             HttpServletRequest req) {
         if (email == null || "".equals(email)) return "邮箱为空";
         if (password == null || "".equals(password)) return "密码为空";
