@@ -2,44 +2,34 @@ package org.spm.spm.bean;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.spm.spm.mapper.TeacherMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.LinkedList;
 import java.util.List;
 
+@Slf4j
 public class Course {
     private static final Gson gson = new Gson();
-    @Autowired
-    private TeacherMapper teacherMapper;
-
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    class Sourse {
-        String title;
-        String type;
-        String url;
-    }
 
     public Integer courseId;
-    public List<String> board;
-    public List<Sourse> src;
+    public LinkedList<String> board;
+    public String src;
     public Teacher teacher;
 
-    public Course(CourseBean cb) {
+    public Course(CourseBean cb, TeacherMapper teacherMapper) {
+        if (cb == null) return;
         courseId = cb.getCourseId();
-        if (cb.getBoard() != null) board = gson.fromJson(cb.getBoard(), new TypeToken<List<String>>() {
+        if (cb.getBoard() != null) board = gson.fromJson(cb.getBoard(), new TypeToken<LinkedList<String>>() {
         }.getType());
-        if (cb.getSource() != null) src = gson.fromJson(cb.getSource(), new TypeToken<List<Sourse>>() {
-        }.getType());
+        if (cb.getSource() != null) src = cb.getSource();
         try {
-            List<Teacher> res = teacherMapper.find(Teacher.builder().email(cb.getTEmail()).build());
+            List<Teacher> res = teacherMapper.findE(cb.getEmail());
             if (res.size() < 1) throw new Exception("null");
             teacher = res.get(0);
-        } catch (Exception ignored) {
+            teacher.setPassword(null);
+        } catch (Exception e) {
+            log.error(e.getMessage());
         }
     }
 
@@ -47,8 +37,8 @@ public class Course {
         return CourseBean.builder()
                 .courseId(courseId)
                 .board(gson.toJson(board))
-                .source(gson.toJson(src))
-                .tEmail(teacher.getEmail())
+                .source(src)
+                .email(teacher.getEmail())
                 .build();
     }
 }

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CourseBean {
     Integer courseId;
+    String email;
     String board;
     String source;
-    String tEmail;
 }

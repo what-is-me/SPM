@@ -4,6 +4,7 @@ import com.google.gson.GsonBuilder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.spm.spm.bean.Message;
 import org.spm.spm.bean.User;
 import org.spm.spm.mapper.MessageMapper;
@@ -18,15 +19,17 @@ import javax.servlet.http.HttpServletRequest;
 @Api(tags = "留言板")
 @RestController
 @RequestMapping(path = "/message")
+@Slf4j
 public class MessageBoardController {
     @Autowired
     MessageMapper messageMapper;
 
-    @ApiImplicitParam(name = "page", value = "第page页留言", dataTypeClass = Integer.class, defaultValue = "0", paramType = "query", required = false)
+    @ApiImplicitParam(name = "page", value = "第page页留言", dataTypeClass = Integer.class, defaultValue = "0", paramType = "query")
     @ApiOperation(value = "聊天记录", notes = "时间降序排列的聊天记录，每页20条")
     @RequestMapping(method = RequestMethod.GET)
-    public String messagesPage(@RequestParam Integer page) {
-        return new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create().toJson(messageMapper.find(page * 20));
+    public String messagesPage(@RequestParam(value = "page", required = false) Integer page) {
+        if (page == null) page = 0;
+        return new GsonBuilder().setDateFormat("yyyy年MM月dd日 HH:mm:ss").create().toJson(messageMapper.find(page * 20));
     }
 
     @ApiImplicitParam(name = "msg", value = "留言内容", dataTypeClass = String.class, paramType = "query", required = true)

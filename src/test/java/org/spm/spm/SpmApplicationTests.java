@@ -1,13 +1,12 @@
 package org.spm.spm;
 
 import org.junit.jupiter.api.Test;
-import org.spm.spm.bean.CourseBean;
+import org.spm.spm.bean.Teacher;
 import org.spm.spm.mapper.CourseMapper;
 import org.spm.spm.mapper.StudentMapper;
+import org.spm.spm.mapper.TeacherMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.List;
 
 @SpringBootTest
 class SpmApplicationTests {
@@ -15,11 +14,12 @@ class SpmApplicationTests {
     private StudentMapper studentMapper;
     @Autowired
     private CourseMapper courseMapper;
+    @Autowired
+    private TeacherMapper teacherMapper;
 
     @Test
     void contextLoads() {
-        List<CourseBean> res = courseMapper.findAll();
-        System.out.println(res);
+        System.out.println(teacherMapper.find(Teacher.builder().email("admin@usst.com").build()).toString());
     }
 
 }

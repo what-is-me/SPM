@@ -33,9 +33,9 @@ create table
     spm.course
 (
     courseId int auto_increment,
+    email    varchar(50) not null,
     board    LONGTEXT    null,
     source   LONGTEXT    null,
-    Temail   varchar(50) not null,
     constraint course_pk primary key (courseId)
 ) comment '就是班级';
 
@@ -45,7 +45,7 @@ alter table spm.student
 
 alter table spm.course
     add
-        constraint tc foreign key (Temail) references spm.teacher (email);
+        constraint tc foreign key (email) references spm.teacher (email);
 
 create table
     spm.files
