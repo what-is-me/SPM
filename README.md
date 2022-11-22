@@ -1,4 +1,4 @@
-# 工程简介
+## 部署方法
 
-# 延伸阅读
-
+* 先运行createtable.sql建好数据库
+* 然后运行src/main/java/org/spm/spm/SpmApplication.java中的main函数
