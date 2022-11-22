@@ -2,3 +2,4 @@
 
 * 先运行createtable.sql建好数据库
 * 然后运行src/main/java/org/spm/spm/SpmApplication.java中的main函数
+* 前端文件放在src/main/resources/static里
