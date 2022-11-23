@@ -11,19 +11,14 @@
 
             $("#sub_btn").click(function () {
                 let usernameValue = $("#username").val();
-                let usernameReg = /^\w{5,15}$/;
-                if (!usernameReg.test(usernameValue)) {
-                    alert("用户名不合法！字母/数字5到15位！");
-                    return false;
-                }
                 let passwordValue = $("#password").val();
                 let passwordReg = /^\w{5,15}$/;
                 if (!passwordReg.test(passwordValue)) {
-                    alert("用户名不合法！字母/数字5到15位！");
+                    alert("密码不合法！字母/数字5到15位！");
                     return false;
                 }
                 let repwdValue = $("#repwd").val();
-                if (passwordValue != repwdValue) {
+                if (passwordValue !== repwdValue) {
                     alert("确认密码和密码不一致！");
                     return false;
                 }
@@ -35,39 +30,29 @@
                 }
 
                 let codeValue = $("#code").val();
-                if (codeValue == "") {
+                if (codeValue === "") {
                     alert("验证码不能为空！");
                     return false;
                 }
-                if (codeValue != "6n6np") {
+                if (codeValue !== "6n6np") {
                     alert("验证码错误！");
                     return false;
                 }
-                let id = document.getElementsByName("ID");
-                for (let i = 0; i < id.length; i++) {
-                    if (id[i].checked)
-                        var identify = id[i].value;
-                }
-
-                /* let JSONobj = {
-                     "identify": identify,
-                     "username ": usernameValue,
-                     "password": passwordValue,
-                     "Email": emailValue
-                 };
-                 alert(JSON.stringify(JSONobj))*/
 
 
                 let url = "http://localhost:8080/sign-in?email=" + emailValue + "&name=" + usernameValue + "&password=" + passwordValue + "&password_again=" + repwdValue + "";
 
                 $.get(url, function (data) {
-                    if (data == "true") {
-                        //如有需要，此处跳转
+                    if (data === "true") {
+                        alert("恭喜您注册成功！请前往登录。");
+                        window.location.href="login.html";
+                    } else {
                         alert(data);
-                    } else alert("网络连接超时，请稍后重试")
+                        return false;
+                    }
                 });
 
-                return true;
+
             });
         });
 
@@ -98,47 +83,36 @@
             <div class="login_box">
                 <div class="tit">
                     <h1>上理工会员</h1>
-
-                    <table align="center">
-                        <tr>
-                            <td width="30%"></td>
-                            <td width="70%">
-                                <input type="radio" name="ID" value="student" checked="checked"/>学生
-                                <input type="radio" name="ID" value="teacher"/>教师
-                            </td>
-                        </tr>
-                    </table>
                     <span class="errorMsg"></span>
                 </div>
                 <div class="form">
 
-                    <label>用户名称：</label>
-                    <input class="itxt" type="text" placeholder="请输入用户名" autocomplete="off"
-                           tabindex="1" name="username" id="username"/>
-                    <br/>
-                    <br/>
-                    <label>用户密码：</label>
-                    <input class="itxt" type="password" placeholder="请输入密码" autocomplete="off"
-                           tabindex="1" name="password" id="password"/>
-                    <br/>
-                    <br/>
-                    <label>确认密码：</label>
-                    <input class="itxt" type="password" placeholder="确认密码" autocomplete="off"
-                           tabindex="1" name="repwd" id="repwd"/>
-                    <br/>
-                    <br/>
-                    <label>电子邮件：</label>
-                    <input class="itxt" type="text" placeholder="请输入邮箱地址" autocomplete="off"
-                           tabindex="1" name="email" id="email"/>
-                    <br/>
-                    <br/>
-                    <label>验证码：</label>
-                    <input class="itxt" type="text" style="width: 150px;" id="code" name="code"/>
-                    <img alt="" src="static/img/code.bmp" style="float: right; margin-right: 40px">
-                    <br/>
-                    <br/>
-                    <input type="button" value="注册" id="sub_btn"/>
-
+                        <label>用户名称：</label>
+                        <input class="itxt" type="text" placeholder="请输入用户名" autocomplete="off"
+                               tabindex="1" name="username" id="username"/>
+                        <br/>
+                        <br/>
+                        <label>用户密码：</label>
+                        <input class="itxt" type="password" placeholder="请输入密码" autocomplete="off"
+                               tabindex="1" name="password" id="password"/>
+                        <br/>
+                        <br/>
+                        <label>确认密码：</label>
+                        <input class="itxt" type="password" placeholder="确认密码" autocomplete="off"
+                               tabindex="1" name="repwd" id="repwd"/>
+                        <br/>
+                        <br/>
+                        <label>电子邮件：</label>
+                        <input class="itxt" type="text" placeholder="请输入邮箱地址" autocomplete="off"
+                               tabindex="1" name="email" id="email"/>
+                        <br/>
+                        <br/>
+                        <label>验证码：</label>
+                        <input class="itxt" type="text" style="width: 150px;" id="code" name="code"/>
+                        <img alt="" src="static/img/code.bmp" style="float: right; margin-right: 40px">
+                        <br/>
+                        <br/>
+                        <input type="button" value="注册" id="sub_btn"/>
 
                 </div>
 

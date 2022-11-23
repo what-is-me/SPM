@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link type="text/css" rel="stylesheet" href="static/css/style.css">
+  <script type="text/javascript" src="static/script/jquery-1.7.2.js"></script>
+  <script type="text/javascript">
+    $(function () {
+
+      $("#sub_btn").click(function () {
+
+        let url="http://localhost:8080/login?email="+usernameValue+"&password="+passwordValue+"&type="+identify+"";
+
+        $.get(url, function (data) {
+
+          if(data =="true"){
+            //如有需要，此处跳转
+            alert(data);
+          }
+          else alert("用户名或者密码不正确")
+        });
+
+        return true;
+      });
+
+    });
+
+  </script>
+</head>
+<body>
+<div id="header">
+  <img class="logo_img" alt="" src="static/img/usst1.jpg">
+  <span class="wel_word">在线学习平台</span>
+</div>
+
+<div class="login_banner">
+
+  <div id="l_content">
+    <span class="login_word">欢迎登录</span>
+  </div>
+
+</div>
+
+
+
+<div id="bottom">
+			<span>
+				在线学习平台.Copyright &copy;2022
+			</span>
+</div>
+</body>
+</html>
