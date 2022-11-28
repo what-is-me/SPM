@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.spm.spm.bean.Student;
 import org.spm.spm.bean.Teacher;
+import org.spm.spm.bean.User;
 import org.spm.spm.mapper.StudentMapper;
 import org.spm.spm.mapper.TeacherMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,5 +65,13 @@ public class LoginController {
                 return "true";
             } else return "密码错误";
         }
+    }
+
+    @ApiOperation(value = "当前登录用户信息")
+    @RequestMapping(path = "current-user", method = RequestMethod.GET)
+    public String currentUser(HttpServletRequest req) {
+        User user = (User) req.getSession().getAttribute("user");
+        if (user == null) return "";
+        return String.format("{\"name\":\"%s\",\"email\":\"%s\",\"type\":\"%s\"}", user.getName(), user.getEmail(), user.userType());
     }
 }

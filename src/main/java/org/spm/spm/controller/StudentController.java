@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@Api(tags = "学生的各种操作(未完成)")
+@Api(tags = "学生的各种操作")
 public class StudentController {
     @Autowired
     private StudentMapper studentMapper;
 
-    @ApiOperation(value = "学生选择课程（未完成）")
+    @ApiOperation(value = "学生选择课程")
     @RequestMapping(path = "/select-course", method = {RequestMethod.GET, RequestMethod.POST})
     public String selectCourse(@RequestParam("courseId") Integer courseId, HttpServletRequest req) {
         Student stu = ((Student) req.getSession().getAttribute("user"));
