@@ -1,3 +1,4 @@
+create database if not exists spm collate utf8_unicode_ci;
 create table
     if not exists spm.student
 (
@@ -10,7 +11,7 @@ create table
 );
 
 create table
-    spm.teacher
+    if not exists spm.teacher
 (
     email    varchar(50) collate utf8_unicode_ci not null,
     name     varchar(8) collate utf8_unicode_ci  not null,
@@ -19,7 +20,7 @@ create table
 );
 
 create table
-    spm.messageboard
+    if not exists spm.messageboard
 (
     name varchar(8) collate utf8_unicode_ci                         not null,
     msg  TEXT collate utf8_unicode_ci                               not null,
@@ -30,12 +31,12 @@ create index
     messageboard_time_index on spm.messageboard (time desc);
 
 create table
-    spm.course
+    if not exists spm.course
 (
-    courseId int auto_increment,
-    email    varchar(50) not null,
-    board    LONGTEXT    null,
-    source   LONGTEXT    null,
+    courseId int collate utf8_unicode_ci auto_increment,
+    email    varchar(50) collate utf8_unicode_ci not null,
+    board    LONGTEXT collate utf8_unicode_ci    null,
+    source   LONGTEXT collate utf8_unicode_ci    null,
     constraint course_pk primary key (courseId)
 ) comment '就是班级';
 
@@ -48,10 +49,36 @@ alter table spm.course
         constraint tc foreign key (email) references spm.teacher (email);
 
 create table
-    spm.files
+    if not exists spm.files
 (
-    email    varchar(50)  not null,
-    filename varchar(256) not null,
-    url      varchar(256) not null,
+    email    varchar(50) collate utf8_unicode_ci  not null,
+    filename varchar(256) collate utf8_unicode_ci not null,
+    url      varchar(256) collate utf8_unicode_ci not null,
     constraint files_pk primary key (email, filename)
 );
+INSERT INTO spm.messageboard (name, msg, time)
+VALUES ('cqc', 'hello world!', '2022-11-15 16:19:50');
+INSERT INTO spm.messageboard (name, msg, time)
+VALUES ('cqc', 'hello?', '2022-11-15 21:52:18');
+INSERT INTO spm.messageboard (name, msg, time)
+VALUES ('cqc', 'emmm', '2022-11-15 21:54:29');
+INSERT INTO spm.messageboard (name, msg, time)
+VALUES ('cqc', '114514', '2022-11-15 21:54:45');
+INSERT INTO spm.messageboard (name, msg, time)
+VALUES ('capoo', 'capoo?', '2022-11-15 22:09:02');
+INSERT INTO spm.messageboard (name, msg, time)
+VALUES ('zjs', '留言', '2022-11-17 14:35:01');
+INSERT INTO spm.messageboard (name, msg, time)
+VALUES ('zxt', '留言', '2022-11-17 14:35:21');
+INSERT INTO spm.messageboard (name, msg, time)
+VALUES ('mtj', '留言', '2022-11-17 14:43:21');
+INSERT INTO spm.messageboard (name, msg, time)
+VALUES ('？？？', '留言', '2022-11-17 14:43:35');
+INSERT INTO spm.messageboard (name, msg, time)
+VALUES ('ababa', 'hello', '2022-11-17 15:07:27');
+INSERT INTO spm.messageboard (name, msg, time)
+VALUES ('emmmm', 'helloworld', '2022-11-17 15:08:44');
+insert into spm.student(email, password, name)
+values ('example@example.com', '123456', '学生1');
+insert into spm.student(email, password, name)
+values ('example@usst.com', '123456', '学生2');
