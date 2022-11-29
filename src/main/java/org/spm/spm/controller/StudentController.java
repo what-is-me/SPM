@@ -23,7 +23,7 @@ public class StudentController {
     public String selectCourse(@RequestParam("courseId") Integer courseId, HttpServletRequest req) {
         Student stu = ((Student) req.getSession().getAttribute("user"));
         stu.setCourseId(String.valueOf(courseId));
-        stu.setTeacherAgreed(0);
+        stu.setTeacherAgreed(1);
         try {
             studentMapper.update(stu);
         } catch (Exception e) {

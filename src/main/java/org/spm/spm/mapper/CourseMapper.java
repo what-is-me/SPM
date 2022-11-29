@@ -10,13 +10,13 @@ public interface CourseMapper {
     @Select("select courseId,email from spm.course;")
     List<CourseBean> findAll();
 
-    @Select("select courseId,email,board,source from spm.course where courseId = ${courseId};")
+    @Select("select courseId,email,board,`source` from spm.course where courseId = ${courseId};")
     List<CourseBean> findById(@Param("courseId") Integer courseId);
 
-    @Select("select courseId,email,board,source from spm.course where email like '${email}';")
+    @Select("select courseId,email,board,`source` from spm.course where email like '${email}';")
     List<CourseBean> findByTeacher(@Param("email") String email);
 
-    @Insert("insert into spm.course (email,board,source)values('${email}','[]','')")
+    @Insert("insert into spm.course (email,board,`source`)values('${email}','[]','')")
     void createCourse(@Param("email") String email);
 
     @Update("update spm.course set source='${src}' where courseId=${courseId};")
