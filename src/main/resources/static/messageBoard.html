@@ -75,7 +75,7 @@
             text-align: right;
             text-size-adjust: 10 sp;
             text-decoration-color: black;
-            float: ceter;
+            float: center;
         }
 
         #upperpage {
@@ -90,7 +90,6 @@
     </style>
     <script>
         var page = 0;
-
         var messages = []
         var urlget = "message?page=";
         var urlpos = "message?page";
@@ -123,7 +122,8 @@
                 }
                 if (data === "true") {
                     console.log("插入成功");
-                    document.getElementById("mess").innerText = "";
+                    document.getElementById("mess").value = "";
+                    window.location.reload()
                 } else {
                     console.log(data);
                 }
@@ -146,7 +146,7 @@
 
         function render() {
             var str = "";
-            if (messages.length == 0) {
+            if (messages.length === 0) {
                 console.log("没有更多新信息");
                 page = document.getElementById("page").innerHTML - 1;
                 return;

@@ -29,7 +29,7 @@ public class MessageBoardController {
     @RequestMapping(method = RequestMethod.GET)
     public String messagesPage(@RequestParam(value = "page", required = false) Integer page) {
         if (page == null) page = 0;
-        return new GsonBuilder().setDateFormat("yyyy年MM月dd日 HH:mm:ss").create().toJson(messageMapper.find(page * 20));
+        return new GsonBuilder().setDateFormat("yyyy年MM月dd日 HH:mm:ss").create().toJson(messageMapper.find(page * 5));
     }
 
     @ApiImplicitParam(name = "msg", value = "留言内容", dataTypeClass = String.class, paramType = "query", required = true)
