@@ -72,6 +72,12 @@ public class LoginController {
     public String currentUser(HttpServletRequest req) {
         User user = (User) req.getSession().getAttribute("user");
         if (user == null) return "";
-        return String.format("{\"name\":\"%s\",\"email\":\"%s\",\"type\":\"%s\"}", user.getName(), user.getEmail(), user.userType());
+        String addInfo = "";
+        if (!"teacher".equals(user.userType())) {
+            String courseId = ((Student) user).getCourseId();
+            if (courseId == null) courseId = "";
+            addInfo = String.format(",\"courseId\":\"%s\"", courseId);
+        }
+        return String.format("{\"name\":\"%s\",\"email\":\"%s\",\"type\":\"%s\"%s}", user.getName(), user.getEmail(), user.userType(), addInfo);
     }
 }
