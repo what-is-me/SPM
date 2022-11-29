@@ -82,3 +82,5 @@ insert into spm.student(email, password, name)
 values ('example@example.com', '123456', '学生1');
 insert into spm.student(email, password, name)
 values ('example@usst.com', '123456', '学生2');
+insert into spm.teacher(email, name, password)
+values ('admin@usst.com', 'admin', '123456')
