@@ -24,8 +24,8 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("Hello world")
-                .description("")
+                .title("SPM")
+                .description("如果某个接口定义了email/courseId之类的信息，但是又不是必填项，那么空着的时候会使用当前登录用户的对应信息")
                 .termsOfServiceUrl("")
                 .contact(new Contact("whatisme", "whatisme", "whatisme@outlook.jp"))
                 .version("1.0")

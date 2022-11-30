@@ -56,6 +56,43 @@ create table
     url      varchar(256) collate utf8_unicode_ci not null,
     constraint files_pk primary key (email, filename)
 );
+create table exam
+(
+    eid   int auto_increment
+        primary key,
+    cid   int         not null,
+    begin datetime    not null,
+    end   datetime    not null,
+    name  varchar(50) not null,
+    text  longtext    not null,
+    constraint exam_course_null_fk
+        foreign key (cid) references spm.course (courseId)
+);
+create table se
+(
+    email varchar(50) not null,
+    eid   int         not null,
+    score double      not null,
+    primary key (email, eid),
+    constraint se_exam_null_fk
+        foreign key (eid) references spm.exam (eid),
+    constraint se_student_null_fk
+        foreign key (email) references spm.student (email)
+)
+    comment '学生成绩表';
+create view student_score as
+select spm.student.email as stu_email,
+       spm.student.name  as stu_name,
+       e.name            as exam_name,
+       spm.se.score      as score,
+       c.email           as teacher_email,
+       c.courseId
+from spm.se
+         left join spm.student on se.email = student.email
+         left join spm.course c on student.courseId = c.courseId
+         left join spm.exam e on e.eid = spm.se.eid
+;
+
 INSERT INTO spm.messageboard (name, msg, time)
 VALUES ('cqc', 'hello world!', '2022-11-15 16:19:50');
 INSERT INTO spm.messageboard (name, msg, time)

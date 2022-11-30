@@ -4,9 +4,13 @@ import com.google.gson.Gson;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.spm.spm.bean.Course;
+import org.spm.spm.bean.Student;
 import org.spm.spm.mapper.CourseMapper;
+import org.spm.spm.mapper.StudentMapper;
 import org.spm.spm.mapper.TeacherMapper;
+import org.spm.spm.tools.MailTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,11 +23,16 @@ import java.util.Date;
 @RestController
 @RequestMapping("course")
 @Api(tags = {"课程相关"})
+@Slf4j
 public class CourseController {
     @Autowired
     CourseMapper courseMapper;
     @Autowired
     TeacherMapper teacherMapper;
+    @Autowired
+    StudentMapper studentMapper;
+    @Autowired
+    MailTool mailTool;
 
     @RequestMapping(value = "/", method = {RequestMethod.GET, RequestMethod.POST})
     @ApiOperation("列出所有课程")
@@ -44,6 +53,13 @@ public class CourseController {
         Course course = new Course(courseMapper.findById(courseId).get(0), teacherMapper);
         course.board.addFirst(new SimpleDateFormat("yyyy年MM月dd日HH点mm分").format(new Date()) + ": " + data);
         courseMapper.updateBrd(courseId, new Gson().toJson(course.board));
+        for (Student stu : studentMapper.studentC(courseId, 1)) {
+            try {
+                mailTool.sendMail(stu.getEmail(), stu.getCourseId() + "发布公告", data);
+            } catch (Exception e) {
+                log.error("发向" + stu.getEmail() + "的邮件发送失败" + e.getMessage());
+            }
+        }
         return new Gson().toJson(course);
     }
 

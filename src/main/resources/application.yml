@@ -6,6 +6,9 @@ server:
   servlet:
     session:
       timeout: 30m
+prefix: http://localhost:8080
+file:
+  url: files
 spring:
   application:
     name: SPM
@@ -14,6 +17,16 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/spm?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
     username: root
     password: root
-file:
-  url: files
-prefix: http://localhost:8080
+  mail:
+    default-encoding: UTF-8
+    host: smtp.yandex.com
+    password: spmUsst0001
+    port: 465
+    properties:
+      mail:
+        smtp:
+          ssl:
+            enable: true
+    protocol: smtp
+    test-connection: false
+    username: spm.usst@yandex.com
