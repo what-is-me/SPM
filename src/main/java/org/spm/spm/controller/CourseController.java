@@ -53,13 +53,15 @@ public class CourseController {
         Course course = new Course(courseMapper.findById(courseId).get(0), teacherMapper);
         course.board.addFirst(new SimpleDateFormat("yyyy年MM月dd日HH点mm分").format(new Date()) + ": " + data);
         courseMapper.updateBrd(courseId, new Gson().toJson(course.board));
-        for (Student stu : studentMapper.studentC(courseId, 1)) {
-            try {
-                mailTool.sendMail(stu.getEmail(), stu.getCourseId() + "发布公告", data);
-            } catch (Exception e) {
-                log.error("发向" + stu.getEmail() + "的邮件发送失败" + e.getMessage());
+        new Thread(() -> {
+            for (Student stu : studentMapper.studentC(courseId, 1)) {
+                try {
+                    mailTool.sendMail(stu.getEmail(), stu.getCourseId() + "发布公告", data);
+                } catch (Exception e) {
+                    log.error("发向" + stu.getEmail() + "的邮件发送失败" + e.getMessage());
+                }
             }
-        }
+        }).start();
         return new Gson().toJson(course);
     }
 
