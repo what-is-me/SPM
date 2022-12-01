@@ -123,12 +123,17 @@ public class TeacherController {
                 .text(text)
                 .build();
         try {
+            try {
+                new Exam(examBean);
+            } catch (Exception e) {
+                return "invalid_examtext";
+            }
             if (eid == null)
                 teacherMapper.addExam(examBean);
             else
                 teacherMapper.updateExam(examBean);
         } catch (Exception e) {
-            return "false";
+            return "database_error";
         }
         return "true";
     }
