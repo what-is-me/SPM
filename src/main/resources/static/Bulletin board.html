@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>公告栏</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .mainHeader {
+
+            padding-top: 1px;
+            padding-bottom: 1px;
+            background-color: white !important;
+            border-bottom: 5px solid #0b6cb8;
+        }
+
+        .liColor {
+            color: #4f4f4f
+        }
+
+        .toolbar {
+            border: 1px solid #ccc;
+        }
+
+        .text {
+            border: 1px solid #ccc;
+            height: 500px;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <script src="wangEditor.min.js"></script>
+    <script>
+        function getCookie(cookie_key) {
+            var cookies=document.cookie
+            if (cookies.length == 0 || cookies_key.length == 0) return;
+            var arr = cookies.split(";");
+            for (var i = 0; i < arr.length; i++) {
+                var somecookie = arr[i].split("=");
+                if (somecookie[0] == cookie_key) return somecookie[1];
+                break;
+            }
+        }
+        var userurlget = "current-user";
+        var urlpos = "course/addBoard";
+        var obj;
+        $.get(userurlget, function (data, status) {
+            if (status !== "success") {
+                console.log("服务器或网络错误");
+                return;
+            }
+            obj = JSON.parse(data);
+        });
+        var CID;
+        if(obj.type=="student"){
+            CID=obj.courseId;
+        }else {
+            CID=getCookie(courseId);
+        }
+        function postmessage() {
+            let str = document.getElementById("boa").value;//$("#mess").val();
+            console.log(str);
+            if (str.length === 0) {
+                console.log("输入栏不能空");
+                return;
+            }
+            $.post(urlpos, {
+                courseId: CID,
+                data: str
+            }, function (data, status) {
+                console.log(data + "\n" + status);
+                if (status !== "success") {
+                    console.log("服务器或网络错误");
+                    return;
+                }
+                if (data === "true") {
+                    console.log("插入成功");
+                    document.getElementById("mess").value = "";
+                    window.location.reload();
+                } else {
+                    console.log(data);
+                }
+            })
+        }
+
+    </script>
+
+</head>
+
+<body style="background-color: whitesmoke">
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12" style="padding: 0">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light mainHeader">
+
+                    <div class="logoDiv" id="logoText">
+                        公告栏
+                    </div>
+
+                    <div class="collapse navbar-collapse" id="navbarText">
+
+                        <ul class="navbar-nav mr-auto">
+
+                        </ul>
+
+                        <span class="navbar-nav">
+                            <a class="nav-link navbar-item active" href="#">返回</a>
+
+                        </span>
+                    </div>
+                </nav>
+
+            </div>
+
+        </div>
+
+        <div class="row" style="min-height: 10px"></div>
+
+        <div class="row">
+            <div class="col-md-1">
+            </div>
+
+            <div class="col-md-2" style="padding-right: 0px">
+
+                <div class="row">
+
+                    <div class="col-md-3"></div>
+
+                    <div class="col-md-9">
+                        <div class="card">
+
+                            <ul class="nav nav-pills nav-fill flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link active list-group-item">发布公告</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link liColor list-group-item" href="Bulletin board2.html">查看公告</a>
+                                </li>
+                            </ul>
+                        </div>
+
+
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="col-md-6" style="padding-left: 0px">
+                <div class="card">
+                    <div class="card-header" style="background-color: white">
+                        <div class="row">
+                            <div class="col-md-3" style="font-size: 18px">编辑</div>
+                        </div>
+                    </div>
+                        <div class="card-body" style="min-height: 1000px">
+                            <div style="padding: 8px 0; color: #ccc"></div>
+                            <div id="div1" class="toolbar">
+                            </div>
+                            <textarea id="boa" name="txt" rows="40" cols="92"></textarea>
+                        </div>
+
+
+                        <div class="row" style="padding: 15px">
+
+                            <div class="col-md-1"></div>
+                            <div class="col-md-2 ml-0">
+                                <button type="button" class="btn btn-primary" id="publishBtn"
+                                    onclick="postmessage()">发布</button>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="reset" class="btn btn-light">清空</button>
+                            </div>
+
+                        </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
