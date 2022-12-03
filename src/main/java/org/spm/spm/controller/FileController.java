@@ -20,7 +20,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -30,8 +29,8 @@ import java.util.Set;
 @Slf4j
 @Api(tags = "文件操作")
 public class FileController {
-    static final private Set<String> plainSuffix = new HashSet<>(Arrays.asList(
-            "txt,md,c,cpp,h,hpp,cxx,java,py,css,js,ts,go,in,out,yml,json".split(",")));
+    static final private Set<String> plainSuffix = new HashSet<>();
+    //new HashSet<>(Arrays.asList("txt,md,c,cpp,h,hpp,cxx,java,py,css,js,ts,go,in,out,yml,json".split(",")));
 
     private String suffix(String filename) {
         String[] tmp = filename.split("\\.");
