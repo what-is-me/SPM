@@ -134,7 +134,7 @@ public class FileController {
         } else response.setContentType("multipart/form-data");
         response.setCharacterEncoding("utf-8");
         response.setContentLength((int) file.length());
-        //response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(fileName, "UTF-8"));//URLEncoder.encode(fileName, ENCODING));
+        response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(fileName, "UTF-8"));//URLEncoder.encode(fileName, ENCODING));
         log.info(java.net.URLEncoder.encode(fileName, "UTF-8"));
         //response.setHeader("Content-Disposition","attachment;filename=" + new String(fileName.getBytes(ENCODING), "ISO8859-1"));
         try (BufferedInputStream bis = new BufferedInputStream(Files.newInputStream(file.toPath()))) {
