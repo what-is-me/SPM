@@ -35,16 +35,10 @@
 
     <script src="wangEditor.min.js"></script>
     <script>
-        function getCookie(cookie_key) {
-            var cookies=document.cookie
-            if (cookies.length == 0 || cookies_key.length == 0) return;
-            var arr = cookies.split(";");
-            for (var i = 0; i < arr.length; i++) {
-                var somecookie = arr[i].split("=");
-                if (somecookie[0] == cookie_key) return somecookie[1];
-                break;
-            }
-        }
+        var url = document.location.toString();//获取url地址
+        var urlParmStr = url.slice(url.indexOf('?')+1);//获取问号后所有的字符串
+        var arr = urlParmStr.split('&');//通过&符号将字符串分割转成数组
+        var courseId = arr[0].split("=")[1];//获取数组中第一个参数
         var userurlget = "current-user";
         var urlpos = "course/addBoard";
         var obj;
@@ -59,7 +53,7 @@
         if(obj.type=="student"){
             CID=obj.courseId;
         }else {
-            CID=getCookie(courseId);
+            CID=courseId;
         }
         function postmessage() {
             let str = document.getElementById("boa").value;//$("#mess").val();
@@ -86,13 +80,21 @@
                 }
             })
         }
+        function pre() {
+            if(obj.type=="student"){
+                confirm('您没有权限发布公告');
+                window.location.href="Bulletin board2.html";
+            }
+        }
 
     </script>
 
 </head>
 
 <body style="background-color: whitesmoke">
-
+    <script>
+        pre();
+    </script>
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12" style="padding: 0">
