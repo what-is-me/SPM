@@ -35,16 +35,10 @@
 
     <script src="wangEditor.min.js"></script>
     <script>
-        function getCookie(cookie_key) {
-            var cookies=document.cookie
-            if (cookies.length == 0 || cookies_key.length == 0) return;
-            var arr = cookies.split(";");
-            for (var i = 0; i < arr.length; i++) {
-                var somecookie = arr[i].split("=");
-                if (somecookie[0] == cookie_key) return somecookie[1];
-                break;
-            }
-        }
+        var url = document.location.toString();//获取url地址
+        var urlParmStr = url.slice(url.indexOf('?')+1);//获取问号后所有的字符串
+        var arr = urlParmStr.split('&');//通过&符号将字符串分割转成数组
+        var courseId = arr[0].split("=")[1];//获取数组中第一个参数
         var bull = []
         var userurlget = "current-user";
         var urlget = "course/byId?courseId="
@@ -60,7 +54,7 @@
         if(obj.type=="student"){
             CID=obj.courseId;
         }else {
-            CID=getCookie(courseId);
+            CID=courseId;
         }
         function getmessages() {
                 $.get(urlget + CID, function (data, status) {
@@ -90,7 +84,6 @@
             section = document.getElementById("show");
             section.innerHTML = str;
         }
-
     </script>
 
 </head>
@@ -140,7 +133,7 @@
 
                             <ul class="nav nav-pills nav-fill flex-column">
                                 <li class="nav-item">
-                                    <a class="nav-link liColor list-group-item" href="Bulletin board.html">发布公告</a>
+                                    <a class="nav-link liColor list-group-item"  href="Bulletin board.html">发布公告</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link active list-group-item">查看公告</a>
