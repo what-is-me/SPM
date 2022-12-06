@@ -29,17 +29,15 @@
         }
     </style>
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
-    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
-    <script src="wangEditor.min.js"></script>
     <script>
         var url = document.location.toString();//获取url地址
         var urlParmStr = url.slice(url.indexOf('?')+1);//获取问号后所有的字符串
         var arr = urlParmStr.split('&');//通过&符号将字符串分割转成数组
         var courseId = arr[0].split("=")[1];//获取数组中第一个参数
-        var bull = []
+        var bull;
         var userurlget = "current-user";
         var urlget = "course/byId?courseId="
         var obj;
@@ -51,11 +49,8 @@
             obj = JSON.parse(data);
         });
         var CID;
-        if(obj.type=="student"){
-            CID=obj.courseId;
-        }else {
-            CID=courseId;
-        }
+        CID=courseId;
+        CID=1;
         function getmessages() {
                 $.get(urlget + CID, function (data, status) {
                     if (status !== "success") {
@@ -69,18 +64,19 @@
 
         function render() {
             var str = "";
-            if (bull.length === 0) {
+            if (bull === null) {
                 console.log("没有更多新信息");
                 return;
             }
-            bull.forEach((item) => {
-                str += `
+            for(let i=1;i<bull.board.length;i++){
+                    str += `
                         <div >
-                            <span class="text">${item.teacher.name}</span><br>
-                            <div class="text">${item.board}</div><br>
+                            <div class="text">${bull.board[i]}</div><br><br>
                         </div>
                         `;
-            });
+            }
+
+            console.log(str);
             section = document.getElementById("show");
             section.innerHTML = str;
         }
@@ -160,7 +156,9 @@
                         <div style="padding: 8px 0; color: #ccc"></div>
                         <div id="div1" class="toolbar">
                         </div>
-                        <section id="show"></section>
+                        <section id="show">
+
+                        </section>
 
                     </div>
 
@@ -182,7 +180,6 @@
 
     </div>
     <script>
-        render();
         getmessages();
     </script>
 </body>

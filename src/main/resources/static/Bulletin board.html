@@ -32,8 +32,6 @@
     <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
-    <script src="wangEditor.min.js"></script>
     <script>
         var url = document.location.toString();//获取url地址
         var urlParmStr = url.slice(url.indexOf('?')+1);//获取问号后所有的字符串
@@ -50,11 +48,8 @@
             obj = JSON.parse(data);
         });
         var CID;
-        if(obj.type=="student"){
-            CID=obj.courseId;
-        }else {
-            CID=courseId;
-        }
+        CID=courseId;
+        CID="1";
         function postmessage() {
             let str = document.getElementById("boa").value;//$("#mess").val();
             console.log(str);
