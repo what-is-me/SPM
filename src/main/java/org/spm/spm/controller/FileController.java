@@ -1,6 +1,6 @@
 package org.spm.spm.controller;
 
-import com.google.gson.GsonBuilder;
+import com.google.gson.Gson;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -18,20 +18,17 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+
 
 @RestController
 @RequestMapping("file")
 @Slf4j
 @Api(tags = "文件操作")
 public class FileController {
-    static final private Set<String> plainSuffix = new HashSet<>();
-    //new HashSet<>(Arrays.asList("txt,md,c,cpp,h,hpp,cxx,java,py,css,js,ts,go,in,out,yml,json".split(",")));
-
     private String suffix(String filename) {
         String[] tmp = filename.split("\\.");
         if (tmp.length == 0) return "txt";
@@ -56,19 +53,22 @@ public class FileController {
         JSONObject object = new JSONObject();
         for (MultipartFile multipartFile : files) {
             String fileName = multipartFile.getOriginalFilename();  // 文件名
+            log.info(fileName);
             File dest = new File(filePath + '/' + email + '/' + fileName);
             if (!dest.getParentFile().exists()) {
                 dest.getParentFile().mkdirs();
             }
             try {
                 multipartFile.transferTo(dest);
-                org.spm.spm.bean.File file = org.spm.spm.bean.File.builder().email(email).filename(fileName).url("file/download?fileName=" + email + "/" + fileName).build();
+                assert fileName != null;
+                org.spm.spm.bean.File file = org.spm.spm.bean.File.builder().email(email).filename(fileName).url("file/download?fileName=" + email + "/" + URLEncoder.encode(fileName, "UTF-8")).build();
                 try {
                     fileMapper.insert(file);
-                } catch (Exception ignored) {
+                } catch (Exception e) {
+                    log.error(e.getMessage());
                 }
             } catch (Exception e) {
-                log.error("{0}", e);
+                log.error(e.getMessage());
                 object.put("success", 2);
                 object.put("result", "程序错误，请重新上传");
                 return object.toString();
@@ -82,13 +82,13 @@ public class FileController {
 
     @ApiOperation("当前用户或者输入email对应用户的文件库")
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String fileOf(@RequestParam(value = "email", required = false) String email, HttpServletRequest req) {
+    public List<org.spm.spm.bean.File> fileOf(@RequestParam(value = "email", required = false) String email, HttpServletRequest req) {
         if (email == null || "".equals(email)) email = ((User) req.getSession().getAttribute("user")).getEmail();
         List<org.spm.spm.bean.File> files = fileMapper.fileOf(email);
         for (org.spm.spm.bean.File file : files) {
             file.setUrl(prefix + '/' + file.getUrl());
         }
-        return new GsonBuilder().disableHtmlEscaping().create().toJson(files);
+        return files;
     }
 
     @ApiOperation(value = "删除文件", notes = "只有拥有者才能删除，email参数测试用，禁止暴露给用户")
@@ -104,39 +104,38 @@ public class FileController {
         return "true";
     }
 
-    @ApiOperation(value = "下载文件", notes = "pdf可以直接预览，txt等文本文件返回内容，其余返回下载")
+    @ApiOperation(value = "下载文件", notes = "pdf可以直接预览")
     @ApiImplicitParam(name = "fileName", value = "文件名:{邮箱}/{文件名}")
     @RequestMapping(value = "/download", method = RequestMethod.GET)
-    public String fileDownLoad(HttpServletResponse response, @RequestParam("fileName") String fileName) throws IOException {
-        fileName = java.net.URLDecoder.decode(fileName, "UTF-8");
+    public void fileDownLoad(HttpServletResponse response, @RequestParam("fileName") String fileName) throws IOException {
+        //fileName = java.net.URLDecoder.decode(fileName, "UTF-8");
+        log.info(fileName);
         File file = new File(filePath + '/' + fileName);
         if (!file.exists()) {
-            return "下载文件不存在";
+            return;
         }
         response.reset();
         String suf = suffix(fileName);
-        if ("pdf".equals(suf))
-            response.setContentType("application/pdf");
-        else if (plainSuffix.contains(suf)) {
+        if ("md".equals(suf)) {
+            response.setContentType("text/html;charset:utf-8;");
+            response.setCharacterEncoding("utf-8");
             try {
                 StringBuilder texts = new StringBuilder();
                 InputStreamReader isr = new InputStreamReader(Files.newInputStream(file.toPath()), StandardCharsets.UTF_8);//加上编码转换
                 BufferedReader read = new BufferedReader(isr);
                 String line;
                 while ((line = read.readLine()) != null) {
-                    texts.append(line);
+                    texts.append(line).append("\n");
                 }
                 read.close();
-                return texts.toString();
+                String html = markdownToHtmlExtensions(texts.toString());
+                //log.info(html);
+                response.getWriter().println(html);
             } catch (Exception e) {
-                return "";
+                log.error(e.getMessage());
             }
-        } else response.setContentType("multipart/form-data");
-        response.setCharacterEncoding("utf-8");
-        response.setContentLength((int) file.length());
-        response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(fileName, "UTF-8"));//URLEncoder.encode(fileName, ENCODING));
-        log.info(java.net.URLEncoder.encode(fileName, "UTF-8"));
-        //response.setHeader("Content-Disposition","attachment;filename=" + new String(fileName.getBytes(ENCODING), "ISO8859-1"));
+            return;
+        }
         try (BufferedInputStream bis = new BufferedInputStream(Files.newInputStream(file.toPath()))) {
             byte[] buff = new byte[1024];
             OutputStream os = response.getOutputStream();
@@ -146,9 +145,51 @@ public class FileController {
                 os.flush();
             }
         } catch (IOException e) {
-            log.error("{0}", e);
-            return "下载失败";
+            log.error(e.getMessage());
+            return;
         }
-        return "下载成功";
+        if ("pdf".equals(suf)) {
+            response.setContentType("application/pdf");
+            return;
+        } else if ("jpg".equals(suf)) {
+            response.setContentType("application/jpeg");
+            return;
+        } else if ("png".equals(suf)) {
+            response.setContentType("application/png");
+            return;
+        } else if ("mp4".equals(suf)) {
+            response.setContentType("video/mpeg4");
+            return;
+        } else if ("mp3".equals(suf)) {
+            response.setContentType("audio/mp3");
+            return;
+        } else if ("txt".equals(suf)) {
+            response.setContentType("text/plain;charset:utf-8;");
+            return;
+        } else response.setContentType("multipart/form-data");
+        response.setCharacterEncoding("utf-8");
+        response.setContentLength((int) file.length());
+        response.setHeader("Content-Disposition", "attachment;filename=" + java.net.URLEncoder.encode(fileName, "UTF-8"));//URLEncoder.encode(fileName, ENCODING));
+        //log.info(java.net.URLEncoder.encode(fileName, "UTF-8"));
+        //response.setHeader("Content-Disposition","attachment;filename=" + new String(fileName.getBytes(ENCODING), "ISO8859-1"));
+    }
+
+    private String markdownToHtmlExtensions(String markdown) {
+        return "<!doctype html>\n" +
+                "<html>\n" +
+                "<head>\n" +
+                "    <meta charset=\"utf-8\"/>\n" +
+                "    <title>Markdown</title>\n" +
+                "    <link rel=\"stylesheet\" href=\"https://sindresorhus.com/github-markdown-css/github-markdown.css\">" +
+                "</head>\n" +
+                "<body>\n" +
+                "<div id=\"content\"></div>\n" +
+                "<script src=\"https://cdn.jsdelivr.net/npm/marked/marked.min.js\"></script>\n" +
+                "<script>\n" +
+                "    document.getElementById('content').innerHTML =\n" +
+                "        marked.parse(" + new Gson().toJson(markdown) + ");\n" +
+                "</script>\n" +
+                "</body>\n" +
+                "</html>\n";
     }
 }

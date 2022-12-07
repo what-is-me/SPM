@@ -8,8 +8,13 @@ server:
       timeout: 30m
 prefix: http://localhost:8080
 file:
-  url: files
+  url: E:\desktop\files\school-work\ProjectManagement\SPM\files
 spring:
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 30MB
+      max-request-size: 30MB
   application:
     name: SPM
   datasource:
