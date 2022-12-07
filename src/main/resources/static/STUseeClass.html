@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="EN" >
+<head>
+    <meta charset="UTF-8">
+    <title>查看课程</title>
+    <style>
+        .mainHeader {
+            padding-top: 1px;
+            padding-bottom: 1px;
+            background-color: white !important;
+            border-bottom: 5px solid #0b6cb8;
+        }
+
+    </style>
+
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+
+        $(function () {
+
+            /*从request中获取参数*/
+            function getUrlVars() {
+                var vars = [],
+                    hash;
+                var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+                for (var i = 0; i < hashes.length; i++) {
+                    hash = hashes[i].split('=');
+                    vars.push(hash[0]);
+                    vars[hash[0]] = hash[1];
+                }
+                return vars;
+            }
+
+            var id = getUrlVars()["courseID"];
+            /*加载班级信息*/
+            let url = "http://localhost:8080/course/byId?courseId=" + id;
+            $.get(url, function (data) {
+                    document.getElementById("class").innerHTML = JSON.parse(data).src;
+                return false;
+            });
+
+
+        });
+
+    </script>
+
+
+</head>
+<body  style="background-color: whitesmoke">
+<section id="header"></section>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12" style="padding: 0">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light mainHeader">
+
+                <div class="logoDiv" id="logoText">
+                    查看班级信息
+                </div>
+
+                <div class="collapse navbar-collapse" id="navbarText">
+
+                    <ul class="navbar-nav mr-auto">
+
+                    </ul>
+
+                    <span class="navbar-nav">
+                                <a class="nav-link navbar-item active" href="#">返回</a>
+    
+                            </span>
+                </div>
+            </nav>
+
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-1">
+        </div>
+        <div class="col-md-2" style="padding-right: 0px">
+
+            <div class="row">
+
+                <div class="col-md-3"></div>
+
+                <div class="col-md-9">
+                    <div class="card">
+
+                        <ul class="nav nav-pills nav-fill flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link active list-group-item">班级信息</a>
+                            </li>
+                        </ul>
+                    </div>
+
+
+                </div>
+            </div>
+
+
+        </div>
+        <div class="col-md-6" style="padding-left: 0px">
+            <div class="card">
+                <div class="card-header" style="background-color: white">
+
+                </div>
+                <div class="card-body" style="min-height: 300px">
+                    <div disabled="true" align="center" class="class_details" id="class">
+                    </div>
+                </div>
+
+
+                <div class="row" style="padding: 15px">
+
+                    <div class="col-md-1"></div>
+                    <div class="col-md-4" id="s">
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<section id="footer"></section>
+</body>
+</html>

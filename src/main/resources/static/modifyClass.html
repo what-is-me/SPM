@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="EN">
+<head>
+    <meta charset="UTF-8">
+    <title>班级信息管理</title>
+    <style>
+        .mainHeader {
+            padding-top: 1px;
+            padding-bottom: 1px;
+            background-color: white !important;
+            border-bottom: 5px solid #0b6cb8;
+        }
+    </style>
+
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+
+        $(function () {
+
+            /*从request中获取Bid参数*/
+            function getUrlVars() {
+                var vars = [],
+                    hash;
+                var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+                for (var i = 0; i < hashes.length; i++) {
+                    hash = hashes[i].split('=');
+                    vars.push(hash[0]);
+                    vars[hash[0]] = hash[1];
+                }
+                return vars;
+            }
+
+            var id = getUrlVars()["courseID"];
+            let str = ` <p align="center"><b>班级信息</b></p>`;
+            let str1 = ` <br><p align="center"><b>实践信息</b></p>`;
+            let str2 = `<br> <p align="center"><b>团队信息</b></p>`;
+
+            /*加载所有信息*/
+            let url = "http://localhost:8080/course/byId?courseId=" + id;
+            $.get(url, function (data) {
+
+               /* {str += '<table style="text-align: center;margin-top: 10px"  cellpadding="0" cellSpacing="20">';
+                let item = JSON.parse(data);
+                str += `<tr>
+                                        <td>班级号：
+                                        </td>
+                                        <td id="class_id">
+                                          <div contenteditable="true">${item.courseId}</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>班主任：
+                                        </td>
+                                        <td >
+                                         <div contenteditable="true">${item.teacher.name}</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>班主任邮箱：
+                                        </td>
+                                        <td >
+                                           <div contenteditable="true">${item.teacher.email}</div>                                        </td>
+                                    </tr>`;
+                str += '</table>';
+                str+='<br>';
+
+                str1 += '<table style="text-align: center;margin-top: 10px" cellpadding="0" cellSpacing="20">';
+                str1 += `<tr>
+                                        <td>实践主题：
+                                        </td>
+                                        <td id="class_id">
+                                          <div contenteditable="true">USST</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>负责人：
+                                        </td>
+                                        <td >
+                                            <div contenteditable="true">S</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>实践目标
+                                        </td>
+                                        <td >
+                                         <div contenteditable="true">S</div>
+                                        </td>
+                                    </tr>`;
+                str1 += '</table>';
+                str1+='<br>';
+
+                str2 += '<table style="text-align: center;margin-top: 10px" cellpadding="0" cellSpacing="20">';
+                str2 += `<tr>
+                                        <td>团队ID：
+                                        </td>
+                                        <td >
+                                          <div contenteditable="true">USST</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>团队负责人：
+                                        </td>
+                                        <td >
+                                            <div contenteditable="true">张三</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>团队成员：
+                                        </td>
+                                        <td >
+                                         <div contenteditable="true">张三、李四、王五</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>团队宗旨：
+                                        </td>
+                                        <td >
+                                           <div contenteditable="true">越来越好！</div>                                        </td>
+                                    </tr>`;
+                str2 += '</table>';
+                str2+='<br>';
+                document.getElementById("class").innerHTML = str+str1+str2;}*/
+                    document.getElementById("class").innerHTML = JSON.parse(data).src;
+
+                return false;
+            });
+
+            /*上交修改信息*/
+            $("#modify").click(function () {
+                alert("修改成功");
+                let urlpos = "http://localhost:8080/course/src";
+                let datas = document.getElementById("class").innerHTML;
+                $.post(urlpos, {courseId: id, data: datas}, function () {
+                });
+            });
+
+        });
+
+    </script>
+
+
+</head>
+<body style="background-color: whitesmoke">
+<section id="header"></section>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12" style="padding: 0">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light mainHeader">
+
+                <div class="logoDiv" id="logoText">
+                    班级信息管理
+                </div>
+
+                <div class="collapse navbar-collapse" id="navbarText">
+
+                    <ul class="navbar-nav mr-auto">
+
+                    </ul>
+
+                    <span class="navbar-nav">
+                                <a class="nav-link navbar-item active" href="#">返回</a>
+    
+                            </span>
+                </div>
+            </nav>
+
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-1">
+        </div>
+        <div class="col-md-2" style="padding-right: 0px">
+
+            <div class="row">
+
+                <div class="col-md-3"></div>
+
+                <div class="col-md-9">
+                    <div class="card">
+
+                        <ul class="nav nav-pills nav-fill flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link active list-group-item">信息管理</a>
+                            </li>
+                        </ul>
+                    </div>
+
+
+                </div>
+            </div>
+
+
+        </div>
+        <div class="col-md-6" style="padding-left: 0px">
+            <div class="card">
+                <div class="card-header" style="background-color: white">
+                </div>
+                <div class="card-body" style="min-height: 300px">
+                    <div align="center" class="class_details" id="class">
+
+                    </div>
+                </div>
+
+
+                <div class="row" style="padding: 15px">
+
+                    <div class="col-md-1"></div>
+                    <div style="margin-left: 500px">
+                        <button type="button" class="btn btn-primary" id="modify">修改</button>
+                    </div>
+                    <div class="col-md-4" id="s">
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<section id="footer"></section>
+</body>
+</html>
