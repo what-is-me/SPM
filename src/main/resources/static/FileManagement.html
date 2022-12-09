@@ -2,7 +2,7 @@
 <html lang="EN" >
 <head>
     <meta charset="UTF-8">
-    <title>查看课程</title>
+    <title>文件管理</title>
     <style>
         .mainHeader {
             padding-top: 1px;
@@ -102,26 +102,35 @@
                     console.log("服务器或网络错误");
                     return;
                 }
-                //console.log(data);
+
                 bull = data;
                 render();
             });
-            function render(){
-                var str="";
-                for(let i=0;i<bull.length;i++){
-                    var urldown="file/download?fileName="+bull[i].email+"%2F"+bull[i].filename;
+            function render() {
+                var str = "";
+                for (let i = 0; i < bull.length; i++) {
+                    var urldown = "file/download?fileName=" + bull[i].email + "/" + bull[i].filename;
                     str += `
                             <div class="text">
                                 ${bull[i].filename}
-                                <a href=`+urldown+` download="${bull[i].filename}">下载</a>
-                                <button type="button" onclick="delete()">删除</button>
+                                <a href=${urldown} target="_blank">查看</a>
+                                <button type="button" onclick=filedelete("${bull[i].filename}")>删除</button>
                             </div><br>
                         `;
                 }
                 document.getElementById("mana").innerHTML = str;
             }
-
         });
+        function filedelete(filename){
+            var urldel="file/delete?filename="+filename;
+            $.get(urldel, function (data, status) {
+                if (status !== "success") {
+                    console.log("服务器或网络错误");
+                    return;
+                }
+                location.reload();
+            });
+        }
         var uploadFile,uploadTip;
         function uploadFileToServer() {
             uploadFile = document.getElementById("upload_file_id");
@@ -129,7 +138,8 @@
             if (uploadFile.value == "") {
                 uploadTip.innerText = "请选择一个文件";
             } else {
-                var formData = new FormData($('#uploadForm')[0]);
+                var formData = new FormData();
+                formData.append('files' , $('.style_file_content')[0].files[0]);
                 var request = new XMLHttpRequest();
                 request.upload.addEventListener("progress", window.evt_upload_progress, false);
                 request.addEventListener("load", window.evt_upload_complete, false);
@@ -170,35 +180,7 @@
             {
                 console.log( "上传中止!");
             };
-                /*$.ajax({
-                    type: 'post',
-                    url: urlpos,
-                    data: formdata,
-                    cache: false,
-                    processData: false,
-                    contentType: false,
-                    success: function (result) {
-                        uploadTip.innerText = "上传成功";
-                    }
-                })*/
-                /*$.post(urlpos, {
-                    files: formdata
-                }, function (data, status) {
-                    console.log(data + "\n" + status);
-                    if (status !== "success") {
-                        console.log("服务器或网络错误");
-                        return;
-                    }
-                    if (data === "true") {
-                        console.log("插入成功");
-                        uploadTip.innerText="上传成功";
-                        window.location.reload();
-                    } else {
-                        console.log(data);
-                    }
-                })
-            }
-        }*/
+
         function showUploadDialog(){
             var up_dialog=document.getElementById("upload_dialog");
             document.getElementById("upload_tip_id").innerText="请选择要上传的文件";
@@ -206,6 +188,7 @@
             up_dialog.style.visibility="visible";
 
         }
+
         function hideUploadDialog(){
             var up_dialog = document.getElementById("upload_dialog");
             document.getElementById("upload_progress_id").style.visibility = "hidden";
@@ -303,7 +286,7 @@
             <div class="style_content_file_div">
                 <span class="style_file_span"> 文件路径：</span>
                 <form id="uploadForm" enctype="multipart/form-data">
-                    <input class="style_file_content" type="file" id="upload_file_id" multiple="multiple"/>
+                    <input class="style_file_content" type="file" id="upload_file_id" />
                 </form>
             </div>
             <div class="style_content_prog_div">
