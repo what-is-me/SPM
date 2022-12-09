@@ -62,11 +62,7 @@ public class FileController {
                 multipartFile.transferTo(dest);
                 assert fileName != null;
                 org.spm.spm.bean.File file = org.spm.spm.bean.File.builder().email(email).filename(fileName).url("file/download?fileName=" + email + "/" + URLEncoder.encode(fileName, "UTF-8")).build();
-                try {
-                    fileMapper.insert(file);
-                } catch (Exception e) {
-                    log.error(e.getMessage());
-                }
+                fileMapper.insert(file);
             } catch (Exception e) {
                 log.error(e.getMessage());
                 object.put("success", 2);
