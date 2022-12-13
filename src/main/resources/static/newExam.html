@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>新建试卷</title>
+    <style>
+        .mainHeader {
+            padding-top: 1px;
+            padding-bottom: 1px;
+            background-color: white !important;
+            border-bottom: 5px solid #0b6cb8;
+        }
+
+        .liColor {
+            color: #4f4f4f
+        }
+
+        .toolbar {
+            border: 1px solid #ccc;
+        }
+
+        .text {
+            border: 1px solid #ccc;
+            height: 500px;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        var cnt=1;var snum,bnum,esnum;
+        $(function () {
+            $("#examsubmit").hide();
+            $("#examindex").click(function() {
+                let cid=$("#cid").val();
+                let begin=$("#begin").val();
+                let end=$("#end").val();
+                snum=$("#snum").val();
+                bnum=$("#bnum").val();
+                esnum=$("#esnum").val();
+                $(".examindex").hide();
+                $("#examindex").hide();
+                $("#examsubmit").show();
+                var str="";
+                for(var i=0;i<snum;i++){
+                    str+='<label>'+cnt+'<br>'+'                        <label>题型：</label>\n' +
+                        '                        <input class="examindex" type="text" value="selection" autocomplete="off" readonly=“readonly”\n' +
+                        '                               tabindex="1" name="type" id="type'+cnt+'"/><br>\n' +
+                        '                        <label>题号：</label>\n' +
+                        '                        <input class="examindex" type="text" value='+cnt+' autocomplete="off" readonly=“readonly”\n' +
+                        '                               tabindex="1" name="id" id="id'+cnt+'"/><br>\n' +
+                        '                        <label>题面：</label><br>\n' +
+                        '                        <textarea class="examindex"  placeholder="请输入题面" autocomplete="off" cols="30" rows="3"\n' +
+                        '                               tabindex="1" name="text" id="text'+cnt+'"></textarea><br>\n' +
+                        '                        <label>分值：</label>\n' +
+                        '                        <input class="examindex" type="text" placeholder="请输入分值" autocomplete="off"\n' +
+                        '                               tabindex="1" name="score" id="score'+cnt+'"/><br>\n' +
+                        '                        <label>答案：</label>\n' +
+                        '                        <input class="examindex" type="text" placeholder="请输入答案" autocomplete="off"\n' +
+                        '                               tabindex="1" name="answer" id="answer'+cnt+'"/><br>\n' +
+                        '                        <label>选项：</label><br>\n' +
+                        '                        <textarea class="examindex" type="text" placeholder="请输入选项" autocomplete="off" cols="30" rows="3"\n' +
+                        '                               tabindex="1" name="choice" id="choice'+cnt+'"></textarea><br></label><br>';
+                    cnt++;
+                }
+                for(var i=0;i<bnum;i++){
+                    str+='<label>'+cnt+'<br>'+'                        <label>题型：</label>\n' +
+                        '                        <input class="examindex" type="text" value="blankfilling" autocomplete="off" readonly=“readonly”\n' +
+                        '                               tabindex="1" name="type" id="type'+cnt+'"/><br>\n' +
+                        '                        <label>题号：</label>\n' +
+                        '                        <input class="examindex" type="text" value='+cnt+' autocomplete="off" readonly=“readonly”\n' +
+                        '                               tabindex="1" name="id" id="id'+cnt+'"/><br>\n' +
+                        '                        <label>题面：</label><br>\n' +
+                        '                        <textarea class="examindex"  placeholder="请输入题面" autocomplete="off" cols="30" rows="3"\n' +
+                        '                               tabindex="1" name="text" id="text'+cnt+'"></textarea><br>\n' +
+                        '                        <label>分值：</label>\n' +
+                        '                        <input class="examindex" type="text" placeholder="请输入分值" autocomplete="off"\n' +
+                        '                               tabindex="1" name="score" id="score'+cnt+'"/><br>\n' +
+                        '                        <label>答案：</label><br>\n' +
+                        '                        <textarea class="examindex" type="text" placeholder="请输入答案" autocomplete="off" cols="30" rows="3"\n' +
+                        '                               tabindex="1" name="answer" id="answer'+cnt+'"></textarea><br></label><br>';
+                    cnt++;
+                }
+                for(var i=0;i<esnum;i++){
+                    str+='<label>'+cnt+'<br>'+'                        <label>题型：</label>\n' +
+                        '                        <input class="examindex" type="text" value="essay" autocomplete="off" readonly=“readonly”\n' +
+                        '                               tabindex="1" name="type" id="type'+cnt+'"/><br>\n' +
+                        '                        <label>题号：</label>\n' +
+                        '                        <input class="examindex" type="text" value='+cnt+' autocomplete="off" readonly=“readonly”\n' +
+                        '                               tabindex="1" name="id" id="id'+cnt+'"/><br>\n' +
+                        '                        <label>题面：</label><br>\n' +
+                        '                        <textarea class="examindex"  placeholder="请输入题面" autocomplete="off" cols="30" rows="3"\n' +
+                        '                               tabindex="1" name="text" id="text'+cnt+'"></textarea><br>\n' +
+                        '                        <label>分值：</label>\n' +
+                        '                        <input class="examindex" type="text" placeholder="请输入分值" autocomplete="off"\n' +
+                        '                               tabindex="1" name="score" id="score'+cnt+'"/><br>\n' +
+                        '                        <label>答案：</label><br>\n' +
+                        '                        <textarea class="examindex" type="textarea" placeholder="请输入答案" autocomplete="off" cols="30" rows="3"\n' +
+                        '                               tabindex="1" name="answer" id="answer'+cnt+'"></textarea><br></label><br>';
+                    cnt++;
+                }
+                str+=''
+                section = document.getElementById("show");
+                section.innerHTML = str;
+                section = document.getElementById("buttons");
+                section.innerHTML = bstr;
+            });
+        });
+        $(function () {
+            $("#examsubmit").click(function () {
+                $.post("http://localhost:8080/teacher/update_exam",function(exam){
+                    let cid = $("#cid").val();
+                    let begin = $("#begin").val();
+                    let end = $("#end").val();
+                    let name = $("#name").val();
+                    var txt = '"Text":"';
+                    for(var i = 1;i < cnt;i++)
+                    {
+                    let type = $("#type" + i + "").val();
+                    txt += type + "\n";
+                    let id = $("#id" + i + "").val();
+                    txt += id + "\n";
+                    let text = $("#text" + i + "").val();
+                    txt += text + "\n";
+                    let score = $("#score" + i + "").val();
+                    txt += score + "\n";
+                    let answer = $("#answer" + i + "").val();
+                    txt += answer + "\n";
+                    if (i <= snum) {
+                        let choice = $("#choice" + i + "").val();
+                        txt += choice + "\n";
+                    }
+                    txt += "\n\n";
+                }
+                exam = '{"Cid":"' + cid + '",' + '"Begin":"' + begin + '",' + '"End":"' + end + '",' + '"Name":"' + name + '",' + txt + '"}';
+                console.log(exam);
+            })
+                ;
+            });
+            let url = "http://localhost:8080/teacher/update_exam";
+            $.get(url, function (data, status) {
+                console.log(data + "\n" + status);
+                if (status !== "success") {
+                    console.log("服务器或网络错误");
+                    return;
+                }
+                if (data === "true") {
+                    console.log("插入成功");
+                    document.getElementById("s").value = "新建完成";
+                } else {
+                    console.log(data);
+                }
+            });
+        });
+    </script>
+
+</head>
+<body style="background-color: whitesmoke">
+<section id="header"></section>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12" style="padding: 0">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light mainHeader">
+
+                <div class="logoDiv" id="logoText">
+                    新建课程
+                </div>
+
+                <div class="collapse navbar-collapse" id="navbarText">
+
+                    <ul class="navbar-nav mr-auto">
+
+                    </ul>
+
+                    <span class="navbar-nav">
+                                <a class="nav-link navbar-item active" href="#">返回</a>
+
+                            </span>
+                </div>
+            </nav>
+
+        </div>
+
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-1">
+        </div>
+
+        <div class="col-md-2" style="padding-right: 0px">
+
+            <div class="row">
+
+                <div class="col-md-3"></div>
+
+                <div class="col-md-9">
+                    <div class="card">
+
+                        <ul class="nav nav-pills nav-fill flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link active list-group-item">新建试卷</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link liColor list-group-item" href="SeeExam.html">查看试卷</a>
+                            </li>
+                        </ul>
+                    </div>
+
+
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="col-md-6" style="padding-left: 0px">
+            <div class="card">
+                <div class="card-header" style="background-color: white">
+                    <div class="row">
+                        <div class="col-md-3" style="font-size: 18px">新建试卷</div>
+                    </div>
+                </div>
+                <div class="card-body" style="min-height: 600px">
+<!--                    <div style="padding: 8px 0; color: #ccc">新建试卷</div>-->
+<!--                    <div id="div1" class="toolbar">-->
+<!--                    </div>-->
+                    <div id="addProblems">
+                        <section id="show"></section>
+                        <label class="examindex">课程ID：</label>
+                        <input class="examindex" type="text" placeholder="请输入课程ID" autocomplete="off"
+                               tabindex="1" name="cid" id="cid"/><br>
+                        <label class="examindex">开始时间：</label>
+                        <input class="examindex" type="datetime-local" placeholder="请输入开始时间" autocomplete="off"
+                               tabindex="1" name="begin" id="begin"/><br>
+                        <label class="examindex">结束时间：</label>
+                        <input class="examindex" type="datetime-local" placeholder="请输入截止时间" autocomplete="off"
+                               tabindex="1" name="end" id="end"/><br>
+                        <label class="examindex">试卷名称：</label>
+                        <input class="examindex" type="text" placeholder="请输入试卷名称" autocomplete="off"
+                               tabindex="1" name="name" id="name"/><br>
+                        <label class="examindex">选择题个数：</label>
+                        <input class="examindex" type="text" placeholder="请输入选择题个数" autocomplete="off"
+                               tabindex="1" name="snum" id="snum"/><br>
+                        <label class="examindex">填空题个数：</label>
+                        <input class="examindex" type="text" placeholder="请输入填空题个数" autocomplete="off"
+                               tabindex="1" name="bnum" id="bnum"/><br>
+                        <label class="examindex">问答题个数：</label>
+                        <input class="examindex" type="text" placeholder="请输入问答题个数" autocomplete="off"
+                               tabindex="1" name="esnum" id="esnum"/><br>
+                    </div>
+                </div>
+
+
+                <div class="row" style="padding: 15px">
+
+                    <div class="col-md-1"></div>
+                    <div class="col-md-2 ml-0">
+                        <button type="button" class="btn btn-primary" id="examindex">新建试卷</button>
+                        <button type="button" class="btn btn-primary" id="examsubmit">提交试卷</button>
+                    </div>
+                    <div class="col-md-4" id="s">
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<section id="footer"></section>
+</body>
+</html>
