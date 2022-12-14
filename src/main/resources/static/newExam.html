@@ -28,78 +28,79 @@
     <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script>
-        var cnt=1;var snum,bnum,esnum;
+        var cnt = 1;
+        var snum, bnum, esnum;
         $(function () {
             $("#examsubmit").hide();
-            $("#examindex").click(function() {
-                let cid=$("#cid").val();
-                let begin=$("#begin").val();
-                let end=$("#end").val();
-                snum=$("#snum").val();
-                bnum=$("#bnum").val();
-                esnum=$("#esnum").val();
+            $("#examindex").click(function () {
+                let cid = $("#cid").val();
+                let begin = $("#begin").val();
+                let end = $("#end").val();
+                snum = $("#snum").val();
+                bnum = $("#bnum").val();
+                esnum = $("#esnum").val();
                 $(".examindex").hide();
                 $("#examindex").hide();
                 $("#examsubmit").show();
-                var str="";
-                for(var i=0;i<snum;i++){
-                    str+='<label>'+cnt+'<br>'+'                        <label>题型：</label>\n' +
+                var str = "";
+                for (var i = 0; i < snum; i++) {
+                    str += '<label>' + cnt + '<br>' + '                        <label>题型：</label>\n' +
                         '                        <input class="examindex" type="text" value="selection" autocomplete="off" readonly=“readonly”\n' +
-                        '                               tabindex="1" name="type" id="type'+cnt+'"/><br>\n' +
+                        '                               tabindex="1" name="type" id="type' + cnt + '"/><br>\n' +
                         '                        <label>题号：</label>\n' +
-                        '                        <input class="examindex" type="text" value='+cnt+' autocomplete="off" readonly=“readonly”\n' +
-                        '                               tabindex="1" name="id" id="id'+cnt+'"/><br>\n' +
+                        '                        <input class="examindex" type="text" value=' + cnt + ' autocomplete="off" readonly=“readonly”\n' +
+                        '                               tabindex="1" name="id" id="id' + cnt + '"/><br>\n' +
                         '                        <label>题面：</label><br>\n' +
                         '                        <textarea class="examindex"  placeholder="请输入题面" autocomplete="off" cols="30" rows="3"\n' +
-                        '                               tabindex="1" name="text" id="text'+cnt+'"></textarea><br>\n' +
+                        '                               tabindex="1" name="text" id="text' + cnt + '"></textarea><br>\n' +
                         '                        <label>分值：</label>\n' +
                         '                        <input class="examindex" type="text" placeholder="请输入分值" autocomplete="off"\n' +
-                        '                               tabindex="1" name="score" id="score'+cnt+'"/><br>\n' +
+                        '                               tabindex="1" name="score" id="score' + cnt + '"/><br>\n' +
                         '                        <label>答案：</label>\n' +
                         '                        <input class="examindex" type="text" placeholder="请输入答案" autocomplete="off"\n' +
-                        '                               tabindex="1" name="answer" id="answer'+cnt+'"/><br>\n' +
+                        '                               tabindex="1" name="answer" id="answer' + cnt + '"/><br>\n' +
                         '                        <label>选项：</label><br>\n' +
                         '                        <textarea class="examindex" type="text" placeholder="请输入选项" autocomplete="off" cols="30" rows="3"\n' +
-                        '                               tabindex="1" name="choice" id="choice'+cnt+'"></textarea><br></label><br>';
+                        '                               tabindex="1" name="choice" id="choice' + cnt + '"></textarea><br></label><br>';
                     cnt++;
                 }
-                for(var i=0;i<bnum;i++){
-                    str+='<label>'+cnt+'<br>'+'                        <label>题型：</label>\n' +
+                for (var i = 0; i < bnum; i++) {
+                    str += '<label>' + cnt + '<br>' + '                        <label>题型：</label>\n' +
                         '                        <input class="examindex" type="text" value="blankfilling" autocomplete="off" readonly=“readonly”\n' +
-                        '                               tabindex="1" name="type" id="type'+cnt+'"/><br>\n' +
+                        '                               tabindex="1" name="type" id="type' + cnt + '"/><br>\n' +
                         '                        <label>题号：</label>\n' +
-                        '                        <input class="examindex" type="text" value='+cnt+' autocomplete="off" readonly=“readonly”\n' +
-                        '                               tabindex="1" name="id" id="id'+cnt+'"/><br>\n' +
+                        '                        <input class="examindex" type="text" value=' + cnt + ' autocomplete="off" readonly=“readonly”\n' +
+                        '                               tabindex="1" name="id" id="id' + cnt + '"/><br>\n' +
                         '                        <label>题面：</label><br>\n' +
                         '                        <textarea class="examindex"  placeholder="请输入题面" autocomplete="off" cols="30" rows="3"\n' +
-                        '                               tabindex="1" name="text" id="text'+cnt+'"></textarea><br>\n' +
+                        '                               tabindex="1" name="text" id="text' + cnt + '"></textarea><br>\n' +
                         '                        <label>分值：</label>\n' +
                         '                        <input class="examindex" type="text" placeholder="请输入分值" autocomplete="off"\n' +
-                        '                               tabindex="1" name="score" id="score'+cnt+'"/><br>\n' +
+                        '                               tabindex="1" name="score" id="score' + cnt + '"/><br>\n' +
                         '                        <label>答案：</label><br>\n' +
                         '                        <textarea class="examindex" type="text" placeholder="请输入答案" autocomplete="off" cols="30" rows="3"\n' +
-                        '                               tabindex="1" name="answer" id="answer'+cnt+'"></textarea><br></label><br>';
+                        '                               tabindex="1" name="answer" id="answer' + cnt + '"></textarea><br></label><br>';
                     cnt++;
                 }
-                for(var i=0;i<esnum;i++){
-                    str+='<label>'+cnt+'<br>'+'                        <label>题型：</label>\n' +
+                for (var i = 0; i < esnum; i++) {
+                    str += '<label>' + cnt + '<br>' + '                        <label>题型：</label>\n' +
                         '                        <input class="examindex" type="text" value="essay" autocomplete="off" readonly=“readonly”\n' +
-                        '                               tabindex="1" name="type" id="type'+cnt+'"/><br>\n' +
+                        '                               tabindex="1" name="type" id="type' + cnt + '"/><br>\n' +
                         '                        <label>题号：</label>\n' +
-                        '                        <input class="examindex" type="text" value='+cnt+' autocomplete="off" readonly=“readonly”\n' +
-                        '                               tabindex="1" name="id" id="id'+cnt+'"/><br>\n' +
+                        '                        <input class="examindex" type="text" value=' + cnt + ' autocomplete="off" readonly=“readonly”\n' +
+                        '                               tabindex="1" name="id" id="id' + cnt + '"/><br>\n' +
                         '                        <label>题面：</label><br>\n' +
                         '                        <textarea class="examindex"  placeholder="请输入题面" autocomplete="off" cols="30" rows="3"\n' +
-                        '                               tabindex="1" name="text" id="text'+cnt+'"></textarea><br>\n' +
+                        '                               tabindex="1" name="text" id="text' + cnt + '"></textarea><br>\n' +
                         '                        <label>分值：</label>\n' +
                         '                        <input class="examindex" type="text" placeholder="请输入分值" autocomplete="off"\n' +
-                        '                               tabindex="1" name="score" id="score'+cnt+'"/><br>\n' +
+                        '                               tabindex="1" name="score" id="score' + cnt + '"/><br>\n' +
                         '                        <label>答案：</label><br>\n' +
                         '                        <textarea class="examindex" type="textarea" placeholder="请输入答案" autocomplete="off" cols="30" rows="3"\n' +
-                        '                               tabindex="1" name="answer" id="answer'+cnt+'"></textarea><br></label><br>';
+                        '                               tabindex="1" name="answer" id="answer' + cnt + '"></textarea><br></label><br>';
                     cnt++;
                 }
-                str+=''
+                str += ''
                 section = document.getElementById("show");
                 section.innerHTML = str;
             });
@@ -111,13 +112,12 @@
                 let end = $("#end").val();
                 let name = $("#name").val();
                 var txt = '';
-                for(var i = 1;i < cnt;i++)
-                {
+                for (var i = 1; i < cnt; i++) {
                     let type = $("#type" + i + "").val();
                     txt += type + "\n";
                     let id = $("#id" + i + "").val();
                     txt += id + "\n";
-                    let text = $("#text" + i + "").val();
+                    let text = $("#text" + i + "").val().replaceAll("\n", " ");
                     txt += text + "\n";
                     let score = $("#score" + i + "").val();
                     txt += score + "\n";
@@ -127,14 +127,15 @@
                         let choice = $("#choice" + i + "").val();
                         txt += choice + "\n";
                     }
-                    txt += "\n\n";
+                    txt += "\n";
                 }
                 // eid = '{"Cid":"' + cid + '",' + '"Begin":"' + begin + '",' + '"End":"' + end + '",' + '"Name":"' + name + '",' + txt + '"}';
-                eid = 'eid='+'&cid='+cid+ '&begin=' + begin + '&end=' + end + '&name=' + name + '&text=' + txt + '';
+                let eid = 'cid=' + cid + '&begin=' + begin + '&end=' + end + '&name=' + name + '&text=' + encodeURIComponent(txt);
+                +'';
                 console.log(eid);
-                $.post("http://localhost:8080/teacher/update_exam",{"eid":eid},function(){
-                console.log(eid);
-            })
+                $.post("http://localhost:8080/teacher/update_exam", eid, function () {
+                    console.log(eid);
+                })
                 ;
             });
         });
@@ -208,9 +209,9 @@
                     </div>
                 </div>
                 <div class="card-body" style="min-height: 600px">
-<!--                    <div style="padding: 8px 0; color: #ccc">新建试卷</div>-->
-<!--                    <div id="div1" class="toolbar">-->
-<!--                    </div>-->
+                    <!--                    <div style="padding: 8px 0; color: #ccc">新建试卷</div>-->
+                    <!--                    <div id="div1" class="toolbar">-->
+                    <!--                    </div>-->
                     <div id="addProblems">
                         <section id="show"></section>
                         <label class="examindex">课程ID：</label>

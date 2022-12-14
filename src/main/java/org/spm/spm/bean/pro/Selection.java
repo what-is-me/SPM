@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 选择题（包括单选和多选）
@@ -24,8 +21,8 @@ import java.util.Set;
 public class Selection implements Problem {
     String id;
     String text;
-    List<String> args;
-    List<String> ans;
+    List<String> args = new ArrayList<>();
+    List<String> ans = new ArrayList<>();
     double score;
 
     public Selection(String[] src) throws Exception {

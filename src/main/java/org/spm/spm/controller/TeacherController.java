@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -107,18 +109,18 @@ public class TeacherController {
     }
 
     @ApiOperation("添加或者修改试卷，新建就不需要试卷编号,返回true或者false代表成功失败")
-    @RequestMapping(path = "/update_exam", method = RequestMethod.POST)
+    @RequestMapping(path = "/update_exam", method = {RequestMethod.POST, RequestMethod.GET})
     public String updateExam(@RequestParam(value = "eid", required = false) Integer eid,
                              @RequestParam Integer cid,
-                             @RequestParam Date begin,
-                             @RequestParam Date end,
+                             @RequestParam String begin,
+                             @RequestParam String end,
                              @RequestParam String name,
-                             @RequestParam String text) {
+                             @RequestParam String text) throws ParseException {
         ExamBean examBean = ExamBean.builder()
                 .eid(eid)
                 .cid(cid)
-                .begin(begin)
-                .end(end)
+                .begin(convert(begin))
+                .end(convert(end))
                 .name(name)
                 .text(text)
                 .build();
@@ -136,5 +138,10 @@ public class TeacherController {
             return "database_error";
         }
         return "true";
+    }
+
+    public Date convert(String s) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+        return sdf.parse(s);
     }
 }

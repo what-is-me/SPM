@@ -6,9 +6,8 @@ import org.spm.spm.mapper.StudentMapper;
 import org.spm.spm.mapper.TeacherMapper;
 import org.spm.spm.tools.MailTool;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+//@SpringBootTest
 class SpmApplicationTests {
     @Autowired
     private StudentMapper studentMapper;

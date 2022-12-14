@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -22,7 +23,7 @@ import java.util.Set;
 public class BlankFilling implements Problem {
     String id;
     String text;
-    List<String> ans;
+    List<String> ans = new ArrayList<>();
     double score;
 
     public BlankFilling(String[] src) throws Exception {
