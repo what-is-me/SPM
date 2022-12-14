@@ -19,6 +19,7 @@ import java.util.List;
 @Builder
 @Data
 public class Essay implements Problem {
+    String type = "essay";
     String id;
     String text;
     List<String> ans = new ArrayList<>();

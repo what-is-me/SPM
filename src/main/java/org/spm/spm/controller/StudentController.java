@@ -51,21 +51,24 @@ public class StudentController {
         return gson.toJson(studentMapper.studentScore(email));
     }
 
-    @ApiOperation("学生的所有试卷")
+    @ApiOperation("查询学生的试卷")
     @RequestMapping(path = "/exams", method = {RequestMethod.GET, RequestMethod.POST})
-    public String studentExams(@RequestParam(value = "email", required = false) String email, HttpServletRequest req) throws Exception {
+    public List<Object> studentExams(@RequestParam(value = "email", required = false) String email, @RequestParam(value = "eid", required = false) Integer eid, HttpServletRequest req) throws Exception {
         Student stu = ((Student) req.getSession().getAttribute("user"));
-        if (email == null || "".equals(email)) {
+        if (email != null && !"".equals(email)) {
             stu = Student.builder().email(email).build();
             stu = studentMapper.find(stu).get(0);
         }
         List<Object> examViews = new ArrayList<>();
         Date now = new Date();
-        for (ExamBean examBean : studentMapper.listExams(stu)) {
+        List<ExamBean> list;
+        if (eid == null) list = studentMapper.listExams(stu);
+        else list = studentMapper.exam(eid);
+        for (ExamBean examBean : list) {
             if (examBean.getBegin().before(now))
                 examViews.add(new Exam(examBean).view());
         }
-        return gson.toJson(examViews);
+        return examViews;
     }
 
     @ApiOperation("评卷,返回每题得分")

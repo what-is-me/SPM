@@ -19,6 +19,7 @@ import java.util.*;
 @Builder
 @Data
 public class Selection implements Problem {
+    String type = "selection";
     String id;
     String text;
     List<String> args = new ArrayList<>();

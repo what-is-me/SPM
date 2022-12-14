@@ -1,129 +1,153 @@
 <!DOCTYPE html>
 <html lang="EN">
 <head>
-  <meta charset="UTF-8">
-  <title>查看试卷</title>
-  <style>
-    .mainHeader {
-      padding-top: 1px;
-      padding-bottom: 1px;
-      background-color: white !important;
-      border-bottom: 5px solid #0b6cb8;
-    }
+    <meta charset="UTF-8">
+    <title>查看试卷</title>
+    <style>
+        .mainHeader {
+            padding-top: 1px;
+            padding-bottom: 1px;
+            background-color: white !important;
+            border-bottom: 5px solid #0b6cb8;
+        }
 
-    .liColor {
-      color: #4f4f4f
-    }
+        .liColor {
+            color: #4f4f4f
+        }
 
-    .toolbar {
-      border: 1px solid #ccc;
-    }
+        .toolbar {
+            border: 1px solid #ccc;
+        }
 
-    .text {
-      border: 1px solid #ccc;
-      height: 500px;
-    }
-  </style>
+        .text {
+            border: 1px solid #ccc;
+            height: 500px;
+        }
+    </style>
 
-  <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
-  <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
-  <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
-  <script>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
 
-  </script>
+    </script>
 
 </head>
 <body style="background-color: whitesmoke">
 <section id="header"></section>
 <div class="container-fluid">
-  <div class="row">
-    <div class="col-md-12" style="padding: 0">
-      <nav class="navbar navbar-expand-lg navbar-light bg-light mainHeader">
+    <div class="row">
+        <div class="col-md-12" style="padding: 0">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light mainHeader">
 
-        <div class="logoDiv" id="logoText">试卷列表</div>
+                <div class="logoDiv" id="logoText">试卷列表</div>
 
-        <div class="collapse navbar-collapse" id="navbarText">
+                <div class="collapse navbar-collapse" id="navbarText">
 
-          <ul class="navbar-nav mr-auto">
+                    <ul class="navbar-nav mr-auto">
 
-          </ul>
+                    </ul>
 
-          <span class="navbar-nav">
+                    <span class="navbar-nav">
                                 <a class="nav-link navbar-item active" href="#">返回</a>
 
                             </span>
+                </div>
+            </nav>
+
         </div>
-      </nav>
 
     </div>
 
-  </div>
+
+    <div class="row">
+        <div class="col-md-1">
+        </div>
+
+        <div class="col-md-2" style="padding-right: 0px">
+
+            <div class="row">
+
+                <div class="col-md-3"></div>
+
+                <div class="col-md-9">
+                    <div class="card">
+
+                        <ul class="nav nav-pills nav-fill flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link liColor list-group-item" href="newExam.html">新建试卷</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active list-group-item">查看试卷</a>
+                            </li>
+                        </ul>
+                    </div>
 
 
-  <div class="row">
-    <div class="col-md-1">
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="col-md-6" style="padding-left: 0px">
+            <div class="card">
+                <div class="card-header" style="background-color: white">
+                    <div class="row">
+                        <div class="col-md-3" style="font-size: 18px">试卷列表</div>
+                    </div>
+                </div>
+
+                <div class="card-body" style="min-height: 1000px">
+                    <div style="padding: 8px 0; color: #ccc"></div>
+                    <div id="div1" class="toolbar">
+                    </div>
+                    <section id="show"></section>
+                    <div id="exams"></div>
+                </div>
+
+
+                <div class="row" style="padding: 15px">
+
+
+                </div>
+
+            </div>
+
+        </div>
     </div>
-
-    <div class="col-md-2" style="padding-right: 0px">
-
-      <div class="row">
-
-        <div class="col-md-3"></div>
-
-        <div class="col-md-9">
-          <div class="card">
-
-            <ul class="nav nav-pills nav-fill flex-column">
-              <li class="nav-item">
-                <a class="nav-link liColor list-group-item" href="newExam.html">新建试卷</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active list-group-item">查看试卷</a>
-              </li>
-            </ul>
-          </div>
-
-
-        </div>
-      </div>
-
-
-    </div>
-
-    <div class="col-md-6" style="padding-left: 0px">
-      <div class="card">
-        <div class="card-header" style="background-color: white">
-          <div class="row">
-            <div class="col-md-3" style="font-size: 18px">试卷列表</div>
-          </div>
-        </div>
-
-        <div class="card-body" style="min-height: 1000px">
-          <div style="padding: 8px 0; color: #ccc"></div>
-          <div id="div1" class="toolbar">
-          </div>
-          <section id="show"></section>
-
-        </div>
-
-
-        <div class="row" style="padding: 15px">
-
-
-        </div>
-
-      </div>
-
-    </div>
-  </div>
 
 </div>
 <section id="footer"></section>
 </body>
 
 <script>
-  getmessages();
-  render();
+    $.get("http://localhost:8080/teacher/exams?email=admin@usst.com", function (data) {
+        console.log(data)
+        data = JSON.parse(data)
+        for (const exam of data) {
+            let $exam = $("<div class=\"card-body\"></div>");
+            $exam.append("<h1>" + exam["name"] + "</h1>")
+            $exam.append("考试编号: " + exam["eid"] + "<br>")
+            $exam.append("开始时间: " + exam["begin"] + "<br>")
+            $exam.append("结束时间: " + exam["end"] + "<br>")
+            for (const problem of exam["problems"]) {
+                let $pro = $("<div></div>")
+                $pro.append("<h2>第" + problem["id"] + "题</h2>" + " " + problem["text"] + "<br>")
+                $pro.append("分数: " + problem["score"] + "<br>")
+                $pro.append("答案: " + problem["ans"] + "<br>")
+                if (problem["type"] === "selection") {
+                    let i = "A"
+                    for (const arg of problem["args"]) {
+                        $pro.append(i + "." + arg + "<br>")
+                        i = String.fromCharCode(i.charCodeAt(0) + 1);
+                    }
+                }
+                $exam.append($pro)
+            }
+            $("#exams").append($exam)
+        }
+    })
 </script>
 </html>

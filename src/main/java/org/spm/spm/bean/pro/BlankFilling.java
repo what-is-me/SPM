@@ -21,6 +21,7 @@ import java.util.Set;
 @Builder
 @Data
 public class BlankFilling implements Problem {
+    String type = "blankfilling";
     String id;
     String text;
     List<String> ans = new ArrayList<>();
