@@ -102,20 +102,17 @@
                 str+=''
                 section = document.getElementById("show");
                 section.innerHTML = str;
-                section = document.getElementById("buttons");
-                section.innerHTML = bstr;
             });
         });
         $(function () {
             $("#examsubmit").click(function () {
-                $.post("http://localhost:8080/teacher/update_exam",function(exam){
-                    let cid = $("#cid").val();
-                    let begin = $("#begin").val();
-                    let end = $("#end").val();
-                    let name = $("#name").val();
-                    var txt = '"Text":"';
-                    for(var i = 1;i < cnt;i++)
-                    {
+                let cid = $("#cid").val();
+                let begin = $("#begin").val();
+                let end = $("#end").val();
+                let name = $("#name").val();
+                var txt = '';
+                for(var i = 1;i < cnt;i++)
+                {
                     let type = $("#type" + i + "").val();
                     txt += type + "\n";
                     let id = $("#id" + i + "").val();
@@ -132,24 +129,13 @@
                     }
                     txt += "\n\n";
                 }
-                exam = '{"Cid":"' + cid + '",' + '"Begin":"' + begin + '",' + '"End":"' + end + '",' + '"Name":"' + name + '",' + txt + '"}';
-                console.log(exam);
+                // eid = '{"Cid":"' + cid + '",' + '"Begin":"' + begin + '",' + '"End":"' + end + '",' + '"Name":"' + name + '",' + txt + '"}';
+                eid = 'eid='+'&cid='+cid+ '&begin=' + begin + '&end=' + end + '&name=' + name + '&text=' + txt + '';
+                console.log(eid);
+                $.post("http://localhost:8080/teacher/update_exam",{"eid":eid},function(){
+                console.log(eid);
             })
                 ;
-            });
-            let url = "http://localhost:8080/teacher/update_exam";
-            $.get(url, function (data, status) {
-                console.log(data + "\n" + status);
-                if (status !== "success") {
-                    console.log("服务器或网络错误");
-                    return;
-                }
-                if (data === "true") {
-                    console.log("插入成功");
-                    document.getElementById("s").value = "新建完成";
-                } else {
-                    console.log(data);
-                }
             });
         });
     </script>
