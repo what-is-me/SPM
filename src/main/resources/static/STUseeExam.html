@@ -76,10 +76,7 @@
 
                         <ul class="nav nav-pills nav-fill flex-column">
                             <li class="nav-item">
-                                <a class="nav-link liColor list-group-item" href="newExam.html">新建试卷</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link active list-group-item">查看试卷</a>
+                                <a class="nav-link active list-group-item">查看考卷</a>
                             </li>
                         </ul>
                     </div>
@@ -95,7 +92,7 @@
             <div class="card">
                 <div class="card-header" style="background-color: white">
                     <div class="row">
-                        <div class="col-md-3" style="font-size: 18px">试卷列表</div>
+                        <div class="col-md-3" style="font-size: 18px">考试</div>
                     </div>
                 </div>
 
@@ -105,6 +102,10 @@
                     </div>
                     <section id="show"></section>
                     <div id="exams"></div>
+                    <button class='btn btn-primary' id='doexam'>考试</button>
+                    <form name="exam" id="doexams" action="check" method="post">
+                    <input type="submit" class='btn btn-primary' id='submitexam' value="提交考卷"></input>
+                    </form>
                 </div>
 
 
@@ -123,35 +124,11 @@
 </body>
 
 <script>
-    // $.get("http://localhost:8080/teacher/exams?email=admin@usst.com", function (data) {
-    //     data=JSON.parse(data);
-    //     for (const exam of data) {
-    //         let $exam = $("<div class=\"card-body\"></div>");
-    //         $exam.append("<h1>" + exam["name"] + "</h1>")
-    //         $exam.append("考试编号: " + exam["eid"] + "<br>")
-    //         $exam.append("开始时间: " + exam["begin"] + "<br>")
-    //         $exam.append("结束时间: " + exam["end"] + "<br>")
-    //         for (const problem of exam["problems"]) {
-    //             let $pro = $("<div></div>")
-    //             $pro.append("<h2>第" + problem["id"] + "题</h2>" + " " + problem["text"] + "<br>")
-    //             $pro.append("分数: " + problem["score"] + "<br>")
-    //             $pro.append("答案: " + problem["ans"] + "<br>")
-    //             if (problem["type"] === "selection") {
-    //                 let i = "A"
-    //                 for (const arg of problem["args"]) {
-    //                     $pro.append(i + "." + arg + "<br>")
-    //                     i = String.fromCharCode(i.charCodeAt(0) + 1);
-    //                 }
-    //             }
-    //             $exam.append($pro)
-    //         }
-    //         $("#exams").append($exam)
-    //     }
-    // })
     $.get("http://localhost:8080/teacher/exams?email=admin@usst.com", function (data) {
         data=JSON.parse(data);
         let $exam = $("<table class='table'><thead>" +
             "<tr>" +
+            "<th scope=\"col\">#</th>" +
             "<th scope=\"col\">考试名称</th>" +
             "<th scope=\"col\">课程编号</th>" +
             "<th scope=\"col\">开始时间</th>" +
@@ -160,9 +137,49 @@
             "</thead>" +
             "<tbody></tbody></table>");
         for (const exam of data) {
-            $exam.append("<tr><th scope='row'>" + exam["name"] + "</th>"+"<td>" + exam["cid"] + "</td>"+"<td>" + exam["begin"] + "</td>"+"<td>" + exam["end"] + "</td></tr>")
+            $exam.append("<tr><th scope='row'><input type='radio' name='chooseexam' id='chooseexam' value='"+exam['eid']+"'></th>"+"<td>" + exam["name"] + "</td>"+"<td>" + exam["cid"] + "</td>"+"<td>" + exam["begin"] + "</td>"+"<td>" + exam["end"]+"</td>")
+            $("#submitexam").hide();
+            //$("."+exam['eid']).hide()
         }
         $("#exams").append($exam)
+        $("#doexam").click(function () {
+            var eid = $("#chooseexam:checked").val();
+            $("#doexam").hide();
+            $(".table").hide();
+            console.log(eid);
+            for (const exam of data) {
+                var a=exam['eid'];
+                if(a.toString()===eid){
+                    console.log("true")
+                    var $stuexam = $("<div class='" + exam['eid'] + "' id='" + exam["problems"].length + "'></div>")
+                    for (const problem of exam["problems"]) {
+                        let $pro = $("<form></form>")
+                        $pro.append("<h5>第" + problem["id"] + "题" + "(" + problem["score"] + "分)</h5>" + problem["text"] + "<br>")
+                        if (problem["type"] === "selection") {
+                            let i = "A"
+                            for (const arg of problem["args"]) {
+                                $pro.append("<input type='radio' name='" + exam["eid"] + problem["id"] + "' value='" + i + "'>" + i + "." + arg + "<br>")
+                                i = String.fromCharCode(i.charCodeAt(0) + 1);
+                            }
+                        } else if (problem["type"] === "blankfilling") {
+                            $pro.append("<textarea placeholder=\"请输入答案\"  autocomplete=\"off\" cols=\"30\" rows=\"3\" tabindex=\"1\" name=" + problem['id'] + "></textarea>")
+                        } else if (problem["type"] === "essay") {
+                            $pro.append("<textarea placeholder=\"请输入答案\"  autocomplete=\"off\" cols=\"30\" rows=\"3\" tabindex=\"1\" name=" + problem['id'] + "></textarea>")
+                        }
+                        $stuexam.append($pro)
+                    }
+                    $("#doexams").append($stuexam)
+                }
+            }
+            $("#submitexam").show();
+        })
+        $("#submitexam").click(function (){
+            var eid=$("#chooseexam:checked").val();
+            var ctt=$("."+eid).attr("id");
+            $.post("http://localhost:8080/teacher/check", eid, function (data) {
+                console.log(data);
+            })
+        })
     })
 </script>
 </html>

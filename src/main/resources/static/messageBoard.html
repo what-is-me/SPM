@@ -4,90 +4,112 @@
 <head>
     <meta charset="utf-8">
     <title>留言板</title>
-    <link type="text/css" rel="stylesheet" href="static/css/style.css">
-    <script
-            src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+<!--    <style>-->
+<!--        .background {-->
+<!--            height: fit-content;-->
+<!--            background-color: #09e6a4;-->
+<!--            width: 80%;-->
+<!--            padding: 10px;-->
+<!--        }-->
+
+<!--        .header {-->
+<!--            height: fit-content;-->
+<!--            width: 80%;-->
+<!--            margin: auto;-->
+<!--        }-->
+
+<!--        .user {-->
+<!--            text-align: left;-->
+<!--            text-size-adjust: 10 sp;-->
+<!--            text-decoration-color: black;-->
+<!--        }-->
+
+<!--        .time {-->
+<!--            text-align: right;-->
+<!--            text-size-adjust: 10 sp;-->
+<!--            text-decoration-color: black;-->
+<!--            float: right;-->
+<!--        }-->
+
+<!--        .space {-->
+<!--            height: 50px;-->
+<!--            color: #00000000;-->
+<!--        }-->
+
+<!--        .message {-->
+<!--            width: 90%;-->
+<!--            height: fit-content;-->
+<!--            line-height: 30px;-->
+<!--            padding: 1px;-->
+<!--            font-size: 15px;-->
+<!--            background-color: rgba(91, 233, 91, 0.625);-->
+<!--            white-space: pre-wrap;-->
+<!--            text-decoration-color: black;-->
+<!--            text-align: left;-->
+<!--            border: 1px solid rgb(4, 85, 4);-->
+<!--        }-->
+
+<!--        .oneblock {-->
+<!--            height: fit-content;-->
+<!--            background-color: #76f0cc;-->
+<!--            width: 70%;-->
+<!--            padding: 5px;-->
+<!--            border: 1px solid rgb(4, 85, 4);-->
+<!--        }-->
+
+<!--        #newMessage {-->
+<!--            height: fit-content;-->
+<!--            width: fit-content;-->
+<!--        }-->
+
+<!--        #lowerpage {-->
+<!--            height: fit-content;-->
+<!--            width: fit-content;-->
+<!--            float: left;-->
+<!--        }-->
+
+<!--        .page {-->
+<!--            text-align: right;-->
+<!--            text-size-adjust: 10 sp;-->
+<!--            text-decoration-color: black;-->
+<!--            float: center;-->
+<!--        }-->
+
+<!--        #upperpage {-->
+<!--            height: fit-content;-->
+<!--            width: fit-content;-->
+<!--            float: right;-->
+<!--        }-->
+
+<!--        body {-->
+<!--            overflow: scroll;-->
+<!--        }-->
+<!--    </style>-->
     <style>
-        .background {
-            height: fit-content;
-            background-color: #09e6a4;
-            width: 80%;
-            padding: 10px;
+        .mainHeader {
+            padding-top: 1px;
+            padding-bottom: 1px;
+            background-color: white !important;
+            border-bottom: 5px solid #0b6cb8;
         }
 
-        .header {
-            height: fit-content;
-            width: 80%;
-            margin: auto;
+        .liColor {
+            color: #4f4f4f
         }
 
-        .user {
-            text-align: left;
-            text-size-adjust: 10 sp;
-            text-decoration-color: black;
+        .toolbar {
+            border: 1px solid #ccc;
         }
 
-        .time {
-            text-align: right;
-            text-size-adjust: 10 sp;
-            text-decoration-color: black;
-            float: right;
-        }
-
-        .space {
-            height: 50px;
-            color: #00000000;
-        }
-
-        .message {
-            width: 90%;
-            height: fit-content;
-            line-height: 30px;
-            padding: 1px;
-            font-size: 15px;
-            background-color: rgba(91, 233, 91, 0.625);
-            white-space: pre-wrap;
-            text-decoration-color: black;
-            text-align: left;
-            border: 1px solid rgb(4, 85, 4);
-        }
-
-        .oneblock {
-            height: fit-content;
-            background-color: #76f0cc;
-            width: 70%;
-            padding: 5px;
-            border: 1px solid rgb(4, 85, 4);
-        }
-
-        #newMessage {
-            height: fit-content;
-            width: fit-content;
-        }
-
-        #lowerpage {
-            height: fit-content;
-            width: fit-content;
-            float: left;
-        }
-
-        .page {
-            text-align: right;
-            text-size-adjust: 10 sp;
-            text-decoration-color: black;
-            float: center;
-        }
-
-        #upperpage {
-            height: fit-content;
-            width: fit-content;
-            float: right;
-        }
-
-        body {
-            overflow: scroll;
+        .text {
+            border: 1px solid #ccc;
+            height: 500px;
         }
     </style>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script>
         var page = 0;
         var messages = []
@@ -154,12 +176,11 @@
             messages.forEach((item) => {
                 str += `
                         <div class="oneblock">
-                            <span class="user">${item.name}</span><br>
+                            <div class="user">${item.name}</div><br>
                             <div class="message">${item.msg}</div>
-                            <span class="time">${item.time}</span><br>
+                            <div class="time">${item.time}</div><br>
                         </div>
                         `;
-
             });
             //console.log(str);
             section = document.getElementById("show");
@@ -169,42 +190,113 @@
     </script>
 </head>
 
-<body>
+<body style="background-color: whitesmoke">
+<section id="header"></section>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12" style="padding: 0">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light mainHeader">
 
-<div class="header">
-    <img class="logo_img" alt="" src="static/img/usst1.jpg">
-    <span class="wel_word">在线学习平台</span>
-    <br>
-    <div style="clear: both"></div>
-</div>
+                <div class="logoDiv" id="logoText">留言板</div>
 
-<div class="background">
-    <section id="show"></section>
+                <div class="collapse navbar-collapse" id="navbarText">
 
+                    <ul class="navbar-nav mr-auto">
 
-    <div class="oneblock">
-        <center>
-            <textarea id="mess" name="留言" cols="100" rows="10"></textarea>
-            <button id="newMessage" onclick="postmessage()">留言</button>
-        </center>
+                    </ul>
+
+                    <span class="navbar-nav">
+                                <a class="nav-link navbar-item active" href="#">返回</a>
+
+                            </span>
+                </div>
+            </nav>
+
+        </div>
 
     </div>
 
-    <div class="oneblock">
-        <center>
-            <button id="lowerpage" onclick="lowerpage()">上一页</button>
-            <span>第</span>
-            <span id="page">1</span>
-            <span>页</span>
-            <button id="upperpage" onclick="upperpage()">下一页</button>
-        </center>
+
+    <div class="row">
+        <div class="col-md-1">
+        </div>
+
+        <div class="col-md-2" style="padding-right: 0px">
+
+            <div class="row">
+
+                <div class="col-md-3"></div>
+
+                <div class="col-md-9">
+                    <div class="card">
+
+                        <ul class="nav nav-pills nav-fill flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link active list-group-item">留言板</a>
+                            </li>
+                        </ul>
+                    </div>
+
+
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="col-md-6" style="padding-left: 0px">
+            <div class="card">
+                <div class="card-header" style="background-color: white">
+                    <div class="row">
+                        <div class="col-md-3" style="font-size: 18px">留言板</div>
+                    </div>
+                </div>
+
+                <div class="card-body" style="min-height: 1000px">
+                    <div style="padding: 8px 0; color: #ccc"></div>
+                    <div class="background">
+                        <section id="show"></section>
+
+
+                        <div class="oneblock">
+                            <div style="text-align: center;">
+                                <textarea id="mess" name="留言" cols="100" rows="10"></textarea>
+                                <button id="newMessage" class="btn btn-primary" onclick="postmessage()">留言</button>
+                            </div>
+
+                        </div>
+
+                        <div class="oneblock">
+                            <div style="text-align: center;">
+                                <button id="lowerpage" class="btn btn-primary" onclick="lowerpage()">上一页</button>
+                                <span>第</span>
+                                <span id="page">1</span>
+                                <span>页</span>
+                                <button id="upperpage" class="btn btn-primary" onclick="upperpage()">下一页</button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="row" style="padding: 15px">
+
+
+                </div>
+
+            </div>
+
+        </div>
     </div>
 
 </div>
+<section id="footer"></section>
+</body>
 
 <script>
     render();
     getmessages();
 </script>
-</body>
 <html>

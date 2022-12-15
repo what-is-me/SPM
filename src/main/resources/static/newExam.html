@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html lang="EN">
 <head>
     <meta charset="UTF-8">
     <title>新建试卷</title>
@@ -33,9 +34,6 @@
         $(function () {
             $("#examsubmit").hide();
             $("#examindex").click(function () {
-                let cid = $("#cid").val();
-                let begin = $("#begin").val();
-                let end = $("#end").val();
                 snum = $("#snum").val();
                 bnum = $("#bnum").val();
                 esnum = $("#esnum").val();
@@ -133,8 +131,9 @@
                 let eid = 'cid=' + cid + '&begin=' + begin + '&end=' + end + '&name=' + name + '&text=' + encodeURIComponent(txt);
                 +'';
                 console.log(eid);
-                $.post("http://localhost:8080/teacher/update_exam", eid, function () {
-                    console.log(eid);
+                    $.post("http://localhost:8080/teacher/update_exam", eid, function (data) {
+                        console.log(data);
+                        console.log(eid);
                 })
                 ;
             });
