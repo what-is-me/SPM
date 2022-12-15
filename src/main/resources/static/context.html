@@ -8,21 +8,21 @@
   <script type="text/javascript">
     $(function () {
 
-      $("#sub_btn").click(function () {
+      // $("#sub_btn").click(function () {
 
         let url="http://localhost:8080/login?email="+usernameValue+"&password="+passwordValue+"&type="+identify+"";
 
         $.get(url, function (data) {
-
+            console.log(data);
           if(data =="true"){
-            //如有需要，此处跳转
+              window.location.href="STUseeExam.html";
             alert(data);
           }
           else alert("用户名或者密码不正确")
         });
 
         return true;
-      });
+      // });
 
     });
 
@@ -30,7 +30,7 @@
 </head>
 <body>
 <div id="header">
-  <img class="logo_img" alt="" src="static/img/usst1.jpg">
+  <img class="logo_img" alt="" style="height: 80px;width: 80px" src="static/img/usst.jpg">
   <span class="wel_word">在线学习平台</span>
 </div>
 
