@@ -203,10 +203,19 @@ h1 {
     height: 40px;
 }
 
+#function td{
+    color: white;
+    font-size:20px;
+}
+#function a{
+    color: white;
+    font-size:20px;
+}
+
 #l_content {
     float: left;
     margin-top: 150px;
-    margin-left: 300px;
+    margin-left: 50px;
 }
 
 #l_content span {

@@ -28,7 +28,6 @@
                         var identify = id[i].value;
                 }
 
-                // var JSONobj = {"identify": identify, "username ": usernameValue, "password": passwordValue};
 
 
                 let url = "http://localhost:8080/login?email=" + usernameValue + "&password=" + passwordValue + "&type=" + identify + "";
@@ -36,7 +35,10 @@
                 $.post(url, function (data) {
 
                     if (data === "true") {
-                        window.location.href="context.html";
+                        if(identify==="student"){
+                            window.location.href="context.html";
+                        }else window.location.href="Tcontext.html";
+
                         return true;
                     } else {
                         alert(data);
