@@ -29,6 +29,7 @@
     <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
     <script>
 
     </script>
@@ -103,8 +104,11 @@
                     <section id="show"></section>
                     <div id="exams"></div>
                     <button class='btn btn-primary' id='doexam'>考试</button>
-                    <form name="exam" id="doexams" action="check" method="post">
-                    <input type="submit" class='btn btn-primary' id='submitexam' value="提交考卷"></input>
+                    <form name="exam" id="doexams" action="student/check" method="post">
+                        <label>
+                            <input type="text" name="exam_id" id="exam_id">
+                        </label>
+                        <button type="button" class='btn btn-primary' id='submitexam'>提交考卷</button>
                     </form>
                 </div>
 
@@ -124,8 +128,10 @@
 </body>
 
 <script>
-    $.get("http://localhost:8080/teacher/exams?email=admin@usst.com", function (data) {
-        data=JSON.parse(data);
+    $("#exam_id").hide()
+    $("#submitexam").hide()
+    $.get("http://localhost:8080/student/exams", function (data) {
+        data = JSON.parse(data)
         let $exam = $("<table class='table'><thead>" +
             "<tr>" +
             "<th scope=\"col\">#</th>" +
@@ -138,7 +144,6 @@
             "<tbody></tbody></table>");
         for (const exam of data) {
             $exam.append("<tr><th scope='row'><input type='radio' name='chooseexam' id='chooseexam' value='"+exam['eid']+"'></th>"+"<td>" + exam["name"] + "</td>"+"<td>" + exam["cid"] + "</td>"+"<td>" + exam["begin"] + "</td>"+"<td>" + exam["end"]+"</td>")
-            $("#submitexam").hide();
             //$("."+exam['eid']).hide()
         }
         $("#exams").append($exam)
@@ -146,19 +151,18 @@
             var eid = $("#chooseexam:checked").val();
             $("#doexam").hide();
             $(".table").hide();
-            console.log(eid);
             for (const exam of data) {
                 var a=exam['eid'];
                 if(a.toString()===eid){
-                    console.log("true")
+                    $("#exam_id").val(eid)
                     var $stuexam = $("<div class='" + exam['eid'] + "' id='" + exam["problems"].length + "'></div>")
                     for (const problem of exam["problems"]) {
-                        let $pro = $("<form></form>")
+                        let $pro = $("<div></div>")
                         $pro.append("<h5>第" + problem["id"] + "题" + "(" + problem["score"] + "分)</h5>" + problem["text"] + "<br>")
                         if (problem["type"] === "selection") {
                             let i = "A"
                             for (const arg of problem["args"]) {
-                                $pro.append("<input type='radio' name='" + exam["eid"] + problem["id"] + "' value='" + i + "'>" + i + "." + arg + "<br>")
+                                $pro.append("<input type='radio' name='" + problem["id"] + "' value='" + i + "'>" + i + "." + arg + "<br>")
                                 i = String.fromCharCode(i.charCodeAt(0) + 1);
                             }
                         } else if (problem["type"] === "blankfilling") {
@@ -172,12 +176,14 @@
                 }
             }
             $("#submitexam").show();
-        })
-        $("#submitexam").click(function (){
-            var eid=$("#chooseexam:checked").val();
-            var ctt=$("."+eid).attr("id");
-            $.post("http://localhost:8080/teacher/check", eid, function (data) {
-                console.log(data);
+            $("#submitexam").click(function addOrder() {
+                $('#doexams').ajaxSubmit({
+                    url: "student/check",
+                    success: function (data) {
+                        alert("总分" + data["all"])
+                    },
+                });
+                return false;
             })
         })
     })

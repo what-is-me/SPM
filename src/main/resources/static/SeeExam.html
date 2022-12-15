@@ -148,8 +148,8 @@
     //         $("#exams").append($exam)
     //     }
     // })
-    $.get("http://localhost:8080/teacher/exams?email=admin@usst.com", function (data) {
-        data=JSON.parse(data);
+    $.get("http://localhost:8080/teacher/exams", function (data) {
+        data = JSON.parse(data);
         let $exam = $("<table class='table'><thead>" +
             "<tr>" +
             "<th scope=\"col\">考试名称</th>" +

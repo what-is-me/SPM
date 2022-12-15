@@ -42,6 +42,6 @@ public interface StudentMapper {
     @Insert("insert into spm.se(email, eid, score) VALUES ('${email}',${eid},${score});")
     void insertScore(@Param("email") String email, @Param("eid") Integer eid, @Param("score") Double score);
 
-    @Update("update spm.se set score=max(score,${score})where email like '${email}' and eid=${eid};")
+    @Update("update spm.se set score=${score} where email like '${email}' and eid=${eid};")
     void updateScore(@Param("email") String email, @Param("eid") Integer eid, @Param("score") Double score);
 }

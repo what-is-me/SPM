@@ -6,6 +6,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.spm.spm.bean.ExamBean;
 import org.spm.spm.bean.Student;
 import org.spm.spm.bean.pro.Exam;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,6 +27,7 @@ import java.util.Map;
 @RestController
 @Api(tags = "学生的各种操作")
 @RequestMapping("student")
+@Slf4j
 public class StudentController {
     @Autowired
     private StudentMapper studentMapper;
@@ -53,22 +56,24 @@ public class StudentController {
 
     @ApiOperation("查询学生的试卷")
     @RequestMapping(path = "/exams", method = {RequestMethod.GET, RequestMethod.POST})
-    public List<Object> studentExams(@RequestParam(value = "email", required = false) String email, @RequestParam(value = "eid", required = false) Integer eid, HttpServletRequest req) throws Exception {
+    public String studentExams(@RequestParam(value = "email", required = false) String email, @RequestParam(value = "eid", required = false) Integer eid, HttpServletRequest req) throws Exception {
         Student stu = ((Student) req.getSession().getAttribute("user"));
         if (email != null && !"".equals(email)) {
             stu = Student.builder().email(email).build();
             stu = studentMapper.find(stu).get(0);
+            log.info(stu.toString());
         }
         List<Object> examViews = new ArrayList<>();
         Date now = new Date();
         List<ExamBean> list;
+
         if (eid == null) list = studentMapper.listExams(stu);
         else list = studentMapper.exam(eid);
         for (ExamBean examBean : list) {
             if (examBean.getBegin().before(now))
                 examViews.add(new Exam(examBean).view());
         }
-        return examViews;
+        return gson.toJson(examViews);
     }
 
     @ApiOperation("评卷,返回每题得分")
@@ -76,9 +81,9 @@ public class StudentController {
             @ApiImplicitParam(name = "exam_id", value = "考试id")
     })
     @RequestMapping(path = "/check", method = RequestMethod.POST)
-    public String checkExam(@RequestParam(value = "email", required = false) String email,
-                            @RequestParam("exam_id") Integer eid,
-                            HttpServletRequest req) throws Exception {
+    public Map<String, Double> checkExam(@RequestParam(value = "email", required = false) String email,
+                                         @RequestParam("exam_id") Integer eid,
+                                         HttpServletRequest req, HttpServletResponse resp) throws Exception {
         if (email == null || "".equals(email)) email = ((Student) req.getSession().getAttribute("user")).getEmail();
         Exam exam = new Exam(studentMapper.exam(eid).get(0));
         Map<String, String[]> stuAns = req.getParameterMap();
@@ -89,6 +94,6 @@ public class StudentController {
         } catch (Exception e) {
             studentMapper.updateScore(email, eid, score);
         }
-        return gson.toJson(res);
+        return res;
     }
 }
