@@ -33,11 +33,7 @@
                 return vars;
             }
 
-            var id = getUrlVars()["courseID"];
-            let str = ` <p align="center"><b>班级信息</b></p>`;
-            let str1 = ` <br><p align="center"><b>实践信息</b></p>`;
-            let str2 = `<br> <p align="center"><b>团队信息</b></p>`;
-
+            let id = getUrlVars()["courseId"];
             /*加载所有信息*/
             let url = "http://localhost:8080/course/byId?courseId=" + id;
             $.get(url, function (data) {
@@ -123,7 +119,89 @@
                 str2 += '</table>';
                 str2+='<br>';
                 document.getElementById("class").innerHTML = str+str1+str2;}*/
-                    document.getElementById("class").innerHTML = JSON.parse(data).src;
+                    let str = JSON.parse(data).src;
+                    if (str.length === 0){
+                        str = '<table style="text-align: center;margin-top: 10px"  cellpadding="0" cellSpacing="20">';
+                            str += `<tr>
+                                        <td>班级号：
+                                        </td>
+                                        <td id="class_id">
+                                          <div contenteditable="true"> </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>班主任：
+                                        </td>
+                                        <td >
+                                         <div contenteditable="true"> </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>班主任邮箱：
+                                        </td>
+                                        <td >
+                                           <div contenteditable="true"> </div>                                        </td>
+                                    </tr>`;
+                            str += '</table>';
+                            str+='<br>';
+
+                            str += '<table style="text-align: center;margin-top: 10px" cellpadding="0" cellSpacing="20">';
+                            str += `<tr>
+                                        <td>实践主题：
+                                        </td>
+                                        <td id="class_id">
+                                          <div contenteditable="true">USST</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>负责人：
+                                        </td>
+                                        <td >
+                                            <div contenteditable="true">S</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>实践目标
+                                        </td>
+                                        <td >
+                                         <div contenteditable="true">S</div>
+                                        </td>
+                                    </tr>`;
+                            str += '</table>';
+                            str+='<br>';
+
+                            str += '<table style="text-align: center;margin-top: 10px" cellpadding="0" cellSpacing="20">';
+                            str += `<tr>
+                                        <td>团队ID：
+                                        </td>
+                                        <td >
+                                          <div contenteditable="true">USST</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>团队负责人：
+                                        </td>
+                                        <td >
+                                            <div contenteditable="true">张三</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>团队成员：
+                                        </td>
+                                        <td >
+                                         <div contenteditable="true">张三、李四、王五</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>团队宗旨：
+                                        </td>
+                                        <td >
+                                           <div contenteditable="true">越来越好！</div>                                        </td>
+                                    </tr>`;
+                            str += '</table>';
+                            str+='<br>';
+                    }
+                    document.getElementById("class").innerHTML = str ;
 
                 return false;
             });
@@ -185,6 +263,14 @@
                         <ul class="nav nav-pills nav-fill flex-column">
                             <li class="nav-item">
                                 <a class="nav-link active list-group-item">信息管理</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link liColor list-group-item" href="Bulletin%20board2.html">查看公告</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link liColor list-group-item" href="Bulletin%20board.html">新建公告</a>
                             </li>
                         </ul>
                     </div>

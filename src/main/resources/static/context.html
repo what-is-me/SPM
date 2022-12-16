@@ -10,15 +10,50 @@
 
       // $("#sub_btn").click(function () {
 
-        let url="http://localhost:8080/login?email="+usernameValue+"&password="+passwordValue+"&type="+identify+"";
+        let url="http://localhost:8080/current-user";
 
         $.get(url, function (data) {
             console.log(data);
-          if(data =="true"){
-              window.location.href="STUseeExam.html";
-            alert(data);
+          if(data.length === 0){
+            alert("未登录");
           }
-          else alert("用户名或者密码不正确")
+          let user = JSON.parse(data);
+          if (user.type==="student"){
+              document.getElementById("function").innerHTML=`<tr>
+                  <td align="center" colspan="4"><h2 style="color: white">请选择您需要的功能</h2></td>
+
+              </tr>
+              <tr>
+                  <td>常用功能：</td>
+                  <td><a href="messageBoard.html">留言板</a></td>
+                  <td><a href="STUBulletin.html">公告栏</a></td>
+                  <td><a href="ChooseCourse.html">选择课程</a></td>
+
+              </tr>
+              <tr>
+                  <td>特殊功能：</td>
+                  <td><a href="STUFile.html">资源区</a></td>
+                  <td><a href="STUseeClass.html">有关课程</a></td>
+                  <td><a href="STUseeExam.html">有关考试</a></td>
+              </tr>`
+          }else {
+              document.getElementById("function").innerHTML=`<tr>
+                  <td align="center" colspan="4"><h2 style="color: white">请选择您需要的功能</h2></td>
+
+              </tr>
+              <tr>
+                  <td>常用功能：</td>
+                  <td><a href="messageBoard.html">留言板</a></td>
+                  <td><a href="newClass.html">新建课程</a></td>
+                  <td><a href="login.html">退出登录</a></td>
+              </tr>
+              <tr>
+                  <td>特殊功能：</td>
+                  <td><a href="FileManagement.html">资源区</a></td>
+                  <td><a href="SeeClass.html">管理课程</a></td>
+                  <td><a href="SeeExam.html">管理考试</a></td>
+              </tr>`
+          }
         });
 
         return true;
@@ -41,22 +76,22 @@
   </div>
     <div align="center"  style="height: 475px">
 
-          <table align="center" id="function" cellspacing="60" cellpadding="0" style="">
+          <table  align="center" id="function" cellspacing="60" cellpadding="0" style="">
               <tr>
                   <td align="center" colspan="4"><h2 style="color: white">请选择您需要的功能</h2></td>
 
               </tr>
               <tr>
                   <td>常用功能：</td>
-                  <td><a>留言板</a></td>
+                  <td><a href="messageBoard.html">留言板</a></td>
                   <td><a href="login.html">退出登录</a></td>
                   <td><a href="STUseeClass.html?courseID=1">查看班级</a></td>
               </tr>
               <tr>
                   <td>特殊功能：</td>
-                  <td><a>资源区</a></td>
-                  <td><a>有关课程</a></td>
-                  <td><a>有关考试</a></td>
+                  <td><a href="FileManagement.html">资源区</a></td>
+                  <td><a href="STUseeClass.htmlSeeClass.html">有关课程</a></td>
+                  <td><a href="STUseeExam.html">有关考试</a></td>
               </tr>
 
           </table>

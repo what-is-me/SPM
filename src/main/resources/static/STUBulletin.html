@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>公告栏</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .mainHeader {
+
+            padding-top: 1px;
+            padding-bottom: 1px;
+            background-color: white !important;
+            border-bottom: 5px solid #0b6cb8;
+        }
+
+        .liColor {
+            color: #4f4f4f
+        }
+
+        .toolbar {
+            border: 1px solid #ccc;
+        }
+
+        .text {
+            border: 1px solid #ccc;
+            height: 500px;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        var url = document.location.toString();//获取url地址
+        var urlParmStr = url.slice(url.indexOf('?')+1);//获取问号后所有的字符串
+        var arr = urlParmStr.split('&');//通过&符号将字符串分割转成数组
+        var courseId = arr[0].split("=")[1];//获取数组中第一个参数
+        var bull;
+        var userurlget = "current-user";
+        var urlget = "course/byId?courseId="
+        var obj;
+        $.get(userurlget, function (data, status) {
+            if (status !== "success") {
+                console.log("服务器或网络错误");
+                return;
+            }
+            obj = JSON.parse(data);
+        });
+        var CID;
+        CID=courseId;
+        function getmessages() {
+            $.get(urlget + CID, function (data, status) {
+                if (status !== "success") {
+                    console.log("服务器或网络错误");
+                    return;
+                }
+                bull = JSON.parse(data);
+                render();
+            });
+        }
+
+        function render() {
+            var str = "";
+            if (bull === null) {
+                console.log("没有更多新信息");
+                return;
+            }
+            for(let i=1;i<bull.board.length;i++){
+                str += `
+                        <div >
+                            <div class="text">${bull.board[i]}</div><br><br>
+                        </div>
+                        `;
+            }
+
+            console.log(str);
+            section = document.getElementById("show");
+            section.innerHTML = str;
+        }
+    </script>
+
+</head>
+
+<body style="background-color: whitesmoke">
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12" style="padding: 0">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light mainHeader">
+
+                <div class="logoDiv" id="logoText">
+                    公告栏
+                </div>
+
+                <div class="collapse navbar-collapse" id="navbarText">
+
+                    <ul class="navbar-nav mr-auto">
+
+                    </ul>
+
+                    <span class="navbar-nav">
+                            <a class="nav-link navbar-item active" href="#">返回</a>
+
+                        </span>
+                </div>
+            </nav>
+
+        </div>
+
+    </div>
+
+    <div class="row" style="min-height: 10px"></div>
+
+    <div class="row">
+        <div class="col-md-1">
+        </div>
+
+        <div class="col-md-2" style="padding-right: 0px">
+
+            <div class="row">
+
+                <div class="col-md-3"></div>
+
+                <div class="col-md-9">
+                    <div class="card">
+
+                        <ul class="nav nav-pills nav-fill flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link active list-group-item">查看公告</a>
+                            </li>
+                        </ul>
+                    </div>
+
+
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="col-md-6" style="padding-left: 0px">
+            <div class="card">
+                <div class="card-header" style="background-color: white">
+                    <div class="row">
+                        <div class="col-md-3" style="font-size: 18px">公告</div>
+                    </div>
+                </div>
+
+                <div class="card-body" style="min-height: 1000px">
+                    <div style="padding: 8px 0; color: #ccc"></div>
+                    <div id="div1" class="toolbar">
+                    </div>
+                    <section id="show">
+
+                    </section>
+
+                </div>
+
+
+                <div class="row" style="padding: 15px">
+
+                    <script>
+
+                    </script>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+</div>
+<script>
+    getmessages();
+</script>
+</body>
+
+</html>

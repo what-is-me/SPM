@@ -35,10 +35,7 @@
                 $.post(url, function (data) {
 
                     if (data === "true") {
-                        if(identify==="student"){
-                            window.location.href="context.html";
-                        }else window.location.href="Tcontext.html";
-
+                        window.location.href="context.html";
                         return true;
                     } else {
                         alert(data);

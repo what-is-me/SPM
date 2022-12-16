@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="EN" >
+<head>
+    <meta charset="UTF-8">
+    <title>文件管理</title>
+    <style>
+        .mainHeader {
+            padding-top: 1px;
+            padding-bottom: 1px;
+            background-color: white !important;
+            border-bottom: 5px solid #0b6cb8;
+        }
+        .upload_dialog_div{
+            position:fixed;
+            left:0px;
+            right:0px;
+            top:0px;
+            bottom:0px;
+            overflow:auto;
+            visibility:hidden;
+            background-color: rgba(60,60,60,0.5);
+            z-index:99;
+        }
+        .style_content_div{
+            position:relative;
+            margin:auto;
+            margin-top:160px;
+            width:400px;
+            height:160px;
+            background:white;
+        }
+        .style_content_upper_div{
+            position:absolute;
+            left:0px;
+            top:0px;
+            width:400px;
+            height:100px;
+            background:white;
+        }
+        .style_content_lower_div{
+            position:absolute;
+            left:0px;
+            top:100px;
+            width:400px;
+            height:60px;
+            background:white;
+        }
+
+        .style_content_file_div{
+            position:absolute;
+            left:15px;
+            top:20px;
+            width:420px;
+            height:60px;
+        }
+        .style_file_span{
+            float:left;
+            width:120px;
+            height:36px;
+            font-size:24px;
+            text-align:right;
+        }
+        .style_file_content{
+            margin-top:5px;
+        }
+        .style_content_prog_div{
+            position:absolute;
+            left:18px;
+            top:57px;
+            width:360px;
+            height:40px;
+        }
+        .style_prog_span_hit{
+            color:#ff0000;
+        }
+        .style_prog_content{
+            width:360px;
+            visibility:hidden;
+        }
+        .style_content_span{
+            width:200px;
+            height:60px;
+            line-height:60px;
+            display:inline-block;
+            float:left;
+            font-size:32px;
+            text-align:center;
+            cursor: pointer;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        var bull;
+        var urlfile="file/";
+        var urlpos="file/upload";
+        $(function () {
+            $.get(urlfile, function (data, status) {
+                if (status !== "success") {
+                    console.log("服务器或网络错误");
+                    return;
+                }
+
+                bull = data;
+                render();
+            });
+            function render() {
+                var str = "";
+                for (let i = 0; i < bull.length; i++) {
+                    var urldown = "file/download?fileName=" + bull[i].email + "/" + bull[i].filename;
+                    str += `
+                            <div class="text">
+                                ${bull[i].filename}
+                                <a href=${urldown} target="_blank">查看</a>
+                                <button type="button" onclick=filedelete("${bull[i].filename}")>删除</button>
+                            </div><br>
+                        `;
+                }
+                document.getElementById("mana").innerHTML = str;
+            }
+        });
+        function filedelete(filename){
+            var urldel="file/delete?filename="+filename;
+            $.get(urldel, function (data, status) {
+                if (status !== "success") {
+                    console.log("服务器或网络错误");
+                    return;
+                }
+                location.reload();
+            });
+        }
+        var uploadFile,uploadTip;
+        function uploadFileToServer() {
+            uploadFile = document.getElementById("upload_file_id");
+            uploadTip = document.getElementById("upload_tip_id");
+            if (uploadFile.value == "") {
+                uploadTip.innerText = "请选择一个文件";
+            } else {
+                var formData = new FormData();
+                formData.append('files' , $('.style_file_content')[0].files[0]);
+                var request = new XMLHttpRequest();
+                request.upload.addEventListener("progress", window.evt_upload_progress, false);
+                request.addEventListener("load", window.evt_upload_complete, false);
+                request.addEventListener("error", window.evt_upload_failed, false);
+                request.addEventListener("abort", window.evt_upload_cancel, false);
+                request.open("POST", urlpos); // 设置服务URL
+                request.send(formData);  // 发送表单数据
+            }
+        }
+        window.evt_upload_progress = function(evt)
+        {
+            if(evt.lengthComputable)
+            {
+                var progress = Math.round(evt.loaded * 100 / evt.total);
+
+                console.log("上传进度" + progress);
+            }
+        };
+        window.evt_upload_complete = function (evt)
+        {
+            if(evt.loaded == 0)
+            {
+                console.log ("上传失败!");
+            }
+            else
+            {
+                console.log ("上传完成!");
+                uploadTip.innerText="文件上传成功";
+                var response = JSON.parse(evt.target.responseText);
+                console.log (response);
+            }
+        };
+        window.evt_upload_failed = function (evt)
+        {
+            console.log  ("上传出错");
+        };
+        window.evt_upload_cancel = function (evt)
+        {
+            console.log( "上传中止!");
+        };
+
+        function showUploadDialog(){
+            var up_dialog=document.getElementById("upload_dialog");
+            document.getElementById("upload_tip_id").innerText="请选择要上传的文件";
+            document.getElementById("upload_progress_id").style.visibility="hidden";
+            up_dialog.style.visibility="visible";
+
+        }
+
+        function hideUploadDialog(){
+            var up_dialog = document.getElementById("upload_dialog");
+            document.getElementById("upload_progress_id").style.visibility = "hidden";
+            up_dialog.style.visibility = "hidden";
+        }
+    </script>
+
+
+</head>
+<body  style="background-color: whitesmoke">
+<section id="header"></section>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12" style="padding: 0">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light mainHeader">
+
+                <div class="logoDiv" id="logoText">
+                    文件管理
+                </div>
+
+                <div class="collapse navbar-collapse" id="navbarText">
+
+                    <ul class="navbar-nav mr-auto">
+
+                    </ul>
+
+                    <span class="navbar-nav">
+                                <a class="nav-link navbar-item active" href="#">返回</a>
+
+                            </span>
+                </div>
+            </nav>
+
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-1">
+        </div>
+        <div class="col-md-2" style="padding-right: 0px">
+
+            <div class="row">
+
+                <div class="col-md-3"></div>
+
+                <div class="col-md-9">
+                    <div class="card">
+
+                        <ul class="nav nav-pills nav-fill flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link active list-group-item">文件信息</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link licolor list-group-item" href="javascript:void(0);" onclick="showUploadDialog()">文件上传</a>
+                            </li>
+                        </ul>
+                    </div>
+
+
+                </div>
+            </div>
+
+
+        </div>
+        <div class="col-md-6" style="padding-left: 0px">
+            <div class="card">
+                <div class="card-header" style="background-color: white">
+
+                </div>
+                <div class="card-body" style="min-height: 300px">
+                    <div disabled="true" align="center" class="class_details" id="class">
+                        <section id="mana">
+                        </section>
+                    </div>
+
+                </div>
+
+
+                <div class="row" style="padding: 15px">
+
+                    <div class="col-md-1"></div>
+                    <div class="col-md-4" id="s">
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<div id="upload_dialog" class="upload_dialog_div">
+    <div class="style_content_div">
+        <div class="style_content_upper_div">
+            <div class="style_content_file_div">
+                <span class="style_file_span"> 文件路径：</span>
+                <form id="uploadForm" enctype="multipart/form-data">
+                    <input class="style_file_content" type="file" id="upload_file_id" />
+                </form>
+            </div>
+            <div class="style_content_prog_div">
+                <span class="style_prog_span_hit" id="upload_tip_id"> 请选择要上传的文件 </span>
+                <progress class="style_prog_content" id="upload_progress_id" value="0" max="100"></progress>
+            </div>
+        </div>
+        <div class="style_content_lower_div">
+            <span class="style_content_span" onmouseover="this.style.background='#cccccc'" onmouseout="this.style.background=''" onclick="hideUploadDialog()">取消</span>
+            <span class="style_content_span" onmouseover="this.style.background='#F5CCDC'" onmouseout="this.style.background=''" onclick="uploadFileToServer()">确定</span>
+        </div>
+    </div>
+</div>
+<section id="footer"></section>
+</body>
+</html>
