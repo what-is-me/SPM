@@ -154,7 +154,7 @@ public class FileController {
             response.setContentType("application/png");
             return;
         } else if ("mp4".equals(suf)) {
-            response.setContentType("video/mpeg4");
+            response.setContentType("video/mp4");
             return;
         } else if ("mp3".equals(suf)) {
             response.setContentType("audio/mp3");
