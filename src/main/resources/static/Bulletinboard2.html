@@ -67,8 +67,9 @@
                 console.log("没有更多新信息");
                 return;
             }
-            for(let i=1;i<bull.board.length;i++){
-                    str += `
+            console.log(bull.board)
+            for (let i = 0; i < bull.board.length; i++) {
+                str += `
                         <div >
                             <div class="text">${bull.board[i]}</div><br><br>
                         </div>
