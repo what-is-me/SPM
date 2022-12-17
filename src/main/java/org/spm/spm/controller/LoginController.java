@@ -68,7 +68,7 @@ public class LoginController {
     }
 
     @ApiOperation(value = "当前登录用户信息")
-    @RequestMapping(path = "current-user", method = RequestMethod.GET)
+    @RequestMapping(path = "/current-user", method = RequestMethod.GET)
     public String currentUser(HttpServletRequest req) {
         User user = (User) req.getSession().getAttribute("user");
         if (user == null) return "";

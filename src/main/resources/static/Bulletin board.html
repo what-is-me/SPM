@@ -38,7 +38,7 @@
         var arr = urlParmStr.split('&');//通过&符号将字符串分割转成数组
         var courseId = arr[0].split("=")[1];//获取数组中第一个参数
         var userurlget = "current-user";
-        var urlpos = "course/addBoard";
+        var urlpos = "/course/addBoard";
         var CID;
         CID=courseId;
         function postmessage() {
@@ -105,7 +105,7 @@
                     </ul>
 
                     <span class="navbar-nav">
-                            <a class="nav-link navbar-item active" href="#">返回</a>
+                            <a class="nav-link navbar-item active" href="Tcontext.html">返回</a>
 
                         </span>
                 </div>
@@ -132,6 +132,9 @@
 
                         <ul class="nav nav-pills nav-fill flex-column">
                             <li class="nav-item">
+                                <a class="nav-link liColor list-group-item" href="modifyClass.html">信息管理</a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link active list-group-item">发布公告</a>
                             </li>
                             <li class="nav-item">
@@ -154,7 +157,7 @@
                         <div class="col-md-3" style="font-size: 18px">编辑</div>
                     </div>
                 </div>
-                <div class="card-body" style="min-height: 1000px">
+                <div class="card-body" style="min-height: 600px">
                     <div style="padding: 8px 0; color: #ccc"></div>
                     <div id="div1" class="toolbar">
                     </div>
