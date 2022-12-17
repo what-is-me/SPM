@@ -129,13 +129,15 @@
                 }
                 // eid = '{"Cid":"' + cid + '",' + '"Begin":"' + begin + '",' + '"End":"' + end + '",' + '"Name":"' + name + '",' + txt + '"}';
                 let eid = 'cid=' + cid + '&begin=' + begin + '&end=' + end + '&name=' + name + '&text=' + encodeURIComponent(txt);
-                +'';
-                console.log(eid);
                     $.post("http://localhost:8080/teacher/update_exam", eid, function (data) {
-                        console.log(data);
-                        console.log(eid);
-                })
-                ;
+                        if (data === "true") {
+                            console.log("插入成功");
+                            alert("新建成功");
+                            window.location.href="newExam.html";
+                        } else {
+                            console.log(data);
+                        }
+                });
             });
         });
     </script>
@@ -159,7 +161,7 @@
                     </ul>
 
                     <span class="navbar-nav">
-                                <a class="nav-link navbar-item active" href="Tcontext.html">返回</a>
+                                <a class="nav-link navbar-item active" href="context.html">返回</a>
 
                             </span>
                 </div>

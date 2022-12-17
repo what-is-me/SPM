@@ -41,6 +41,7 @@
         var urlpos = "/course/addBoard";
         var CID;
         CID=courseId;
+        console.log(CID);
         function postmessage() {
             let str = document.getElementById("boa").value;//$("#mess").val();
             console.log(str);
@@ -48,10 +49,7 @@
                 console.log("输入栏不能空");
                 return;
             }
-            $.post(urlpos, {
-                courseId: CID,
-                data: str
-            }, function (data, status) {
+            $.post(urlpos,{Courseid:CID,data:str}, function (data, status) {
                 console.log(data + "\n" + status);
                 if (status !== "success") {
                     console.log("服务器或网络错误");
@@ -105,7 +103,7 @@
                     </ul>
 
                     <span class="navbar-nav">
-                            <a class="nav-link navbar-item active" href="Tcontext.html">返回</a>
+                            <a class="nav-link navbar-item active" href="context.html">返回</a>
 
                         </span>
                 </div>
@@ -138,7 +136,7 @@
                                 <a class="nav-link active list-group-item">发布公告</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link liColor list-group-item" href="Bulletin board2.html">查看公告</a>
+                                <a class="nav-link liColor list-group-item" href="Bulletinboard2.html">查看公告</a>
                             </li>
                         </ul>
                     </div>
