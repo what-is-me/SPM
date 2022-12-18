@@ -21,18 +21,21 @@
 
         $(function () {
 
-            $("#search").click(function () {
-                let emailValue = $("#email").val();
-                let emailReg = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
-                if (!emailReg.test(emailValue)) {// 提示用户
-                    alert("邮箱格式错误！");
-                    return false;
-                }
+            let urlcurrent="http://localhost:8080/current-user";
+            let current_user;
+            $.get(urlcurrent,function (data){
+                let current = JSON.parse(data);
+                current_user=current.email;
 
-
-                let url = "http://localhost:8080/student/scores?email="+emailValue;
+                let url = "http://localhost:8080/student/scores?email="+current_user;
 
                 $.post(url, function (data) {
+                    console.log(data);
+                    if (data === "[]") {
+                        let str = `<h1 style="padding-top: 30px">暂无相关成绩信息</h1>`;
+                        document.getElementById("grades").innerHTML = str;
+                        return false;
+                    }else {
 
                     let str = `<table align="center" border="0" valign="center" style="text-align: center" cellspacing="0"
                        cellpadding="25">
@@ -52,13 +55,9 @@
                     });
                     str += `</table><div style="clear:both "></div>`;
                     document.getElementById("grades").innerHTML = str;
-                    return false;
-
+                    return false;}
                 });
-
-
-            });
-
+            })
         });
 
     </script>
@@ -125,13 +124,7 @@
 
                 </div>
                 <div class="card-body" style="min-height: 300px">
-                    <div id="query" align="center">
-                        <input type="texe" placeholder="请输入学生邮箱号" id="email">
-                        <input type="button" value="查询" id="search">
-
-                    </div>
                     <div disabled="true" align="center" class="class_details" id="grades">
-                        <h1 style="padding-top: 100px">欢迎使用成绩查询功能！</h1>
 
                     </div>
                 </div>
