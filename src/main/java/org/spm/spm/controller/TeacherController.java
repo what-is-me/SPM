@@ -70,12 +70,12 @@ public class TeacherController {
 
     @ApiOperation("列出选择某门课的学生")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "courseId", value = "课程号", dataTypeClass = Integer.class, paramType = "query")
-            //,@ApiImplicitParam(name = "agreed", value = "老师是否同意,1表同意0表不同意", dataTypeClass = Integer.class, paramType = "query")
+            @ApiImplicitParam(name = "courseId", value = "课程号", dataTypeClass = Integer.class, paramType = "query"),
+            @ApiImplicitParam(name = "agreed", value = "老师是否同意,1表同意0表不同意", dataTypeClass = Integer.class, paramType = "query")
     })
     @RequestMapping(value = "/sc", method = {RequestMethod.GET, RequestMethod.POST})
-    public String studentC(@RequestParam Integer courseId) {
-        return gson.toJson(studentMapper.studentC(courseId, 1));
+    public String studentC(@RequestParam Integer courseId, @RequestParam Integer agreed) {
+        return gson.toJson(studentMapper.studentC(courseId, agreed));
     }
 
     @ApiOperation("[decrepted]同意或拒绝某同学选某课")
