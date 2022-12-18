@@ -21,6 +21,32 @@
 
         $(function () {
 
+
+            let urlcurrent="http://localhost:8080/current-user";
+            let current_userID;
+            $.get(urlcurrent,function (data){
+                let current = JSON.parse(data);
+                if(isNaN(parseInt(current.courseId))){
+                    let str=`<h4>你还没有录入班级信息，请联系辅导员</h4>`;
+                    document.getElementById("class").innerHTML=str;
+                    return false;
+                }
+                current_userID=current.courseId;
+
+                let url = "http://localhost:8080/course/byId?courseId="+parseInt(current_userID);
+                $.get(url, function (data) {
+                    let a = JSON.parse(data);
+                    if(typeof a.src === 'undefined'){
+                        let str=`<h4>暂无相关班级信息，请等待教师发布</h4>`;
+                         document.getElementById("class").innerHTML=str;
+                         return false;
+                    }else {
+                    document.getElementById("class").innerHTML = JSON.parse(data).src;
+                    return false;}
+                });
+
+             })
+
             /*从request中获取参数*/
             function getUrlVars() {
                 var vars = [],
@@ -36,11 +62,7 @@
 
             var id = getUrlVars()["courseID"];
             /*加载班级信息*/
-            let url = "http://localhost:8080/course/byId?courseId=" + id;
-            $.get(url, function (data) {
-                    document.getElementById("class").innerHTML = JSON.parse(data).src;
-                return false;
-            });
+
 
 
         });
