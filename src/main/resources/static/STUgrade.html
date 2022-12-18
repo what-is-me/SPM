@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="EN" >
+<head>
+    <meta charset="UTF-8">
+    <title>学生成绩查询</title>
+    <style>
+        .mainHeader {
+            padding-top: 1px;
+            padding-bottom: 1px;
+            background-color: white !important;
+            border-bottom: 5px solid #0b6cb8;
+        }
+
+    </style>
+
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+
+        $(function () {
+
+            $("#search").click(function () {
+                let emailValue = $("#email").val();
+                let emailReg = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
+                if (!emailReg.test(emailValue)) {// 提示用户
+                    alert("邮箱格式错误！");
+                    return false;
+                }
+
+
+                let url = "http://localhost:8080/student/scores?email="+emailValue;
+
+                $.post(url, function (data) {
+
+                    let str = `<table align="center" border="0" valign="center" style="text-align: center" cellspacing="0"
+                       cellpadding="25">
+                    <tr>
+                        <th>试卷ID</th>
+                        <th>成绩</th>
+                        <th>试卷名称</th>
+                    </tr>`;
+                    let grades = JSON.parse(data);
+                    grades.forEach((item) => {
+                        str += `<tr>
+                        <td>${item.eid}</td>
+                        <td> ${item.score}</td>
+                        <td>${item.name}</td>
+                    </tr>`;
+
+                    });
+                    str += `</table><div style="clear:both "></div>`;
+                    document.getElementById("grades").innerHTML = str;
+                    return false;
+
+                });
+
+
+            });
+
+        });
+
+    </script>
+
+
+</head>
+<body  style="background-color: whitesmoke">
+<section id="header"></section>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12" style="padding: 0">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light mainHeader">
+
+                <div class="logoDiv" id="logoText">
+                    成绩查询
+                </div>
+
+                <div class="collapse navbar-collapse" id="navbarText">
+
+                    <ul class="navbar-nav mr-auto">
+
+                    </ul>
+
+                    <span class="navbar-nav">
+                                <a class="nav-link navbar-item active" href="context.html">返回</a>
+    
+                            </span>
+                </div>
+            </nav>
+
+        </div>
+
+    </div>
+    <div class="row" style="min-height: 10px"></div>
+
+    <div class="row">
+        <div class="col-md-1">
+        </div>
+        <div class="col-md-2" style="padding-right: 0px">
+
+            <div class="row">
+
+                <div class="col-md-3"></div>
+
+                <div class="col-md-9">
+                    <div class="card">
+
+                        <ul class="nav nav-pills nav-fill flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link active list-group-item">学生成绩</a>
+                            </li>
+                        </ul>
+                    </div>
+
+
+                </div>
+            </div>
+
+
+        </div>
+        <div class="col-md-6" style="padding-left: 0px">
+            <div class="card">
+                <div class="card-header" style="background-color: white">
+
+                </div>
+                <div class="card-body" style="min-height: 300px">
+                    <div id="query" align="center">
+                        <input type="texe" placeholder="请输入学生邮箱号" id="email">
+                        <input type="button" value="查询" id="search">
+
+                    </div>
+                    <div disabled="true" align="center" class="class_details" id="grades">
+                        <h1 style="padding-top: 100px">欢迎使用成绩查询功能！</h1>
+
+                    </div>
+                </div>
+
+
+                <div class="row" style="padding: 15px">
+
+                    <div class="col-md-1"></div>
+                    <div class="col-md-4" id="s">
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<section id="footer"></section>
+</body>
+</html>
