@@ -31,7 +31,7 @@
         <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
         <script>
             function postmessage() {
-            $.get("http://localhost:8080/teacher/courses", function (data,status) {
+            $.get("http://localhost:8080/teacher/makeCourse", function (data,status) {
                 console.log(data + "\n" + status);
                 if (status !== "success") {
                     console.log("服务器或网络错误");
@@ -39,7 +39,7 @@
                 }
                 if (data === "true") {
                     console.log("插入成功");
-                    document.getElementById("s").value = "新建完成";
+                    document.getElementById("s").innerHTML = "新建完成";
                 } else {
                     console.log(data);
                 }
