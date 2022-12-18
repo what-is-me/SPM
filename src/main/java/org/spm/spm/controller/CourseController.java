@@ -56,7 +56,7 @@ public class CourseController {
         new Thread(() -> {
             for (Student stu : studentMapper.studentC(courseId, 1)) {
                 try {
-                    mailTool.sendMail(stu.getEmail(), stu.getCourseId() + "发布公告", data);
+                    mailTool.sendMail(stu.getEmail(), courseId + "发布公告", data);
                 } catch (Exception e) {
                     log.error("发向" + stu.getEmail() + "的邮件发送失败" + e.getMessage());
                 }
