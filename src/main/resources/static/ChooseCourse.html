@@ -1,240 +1,250 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>学生管理</title>
-  <style>
-    .mainHeader {
-      padding-top: 1px;
-      padding-bottom: 1px;
-      background-color: white !important;
-      border-bottom: 5px solid #0b6cb8;
-    }
-
-    .liColor {
-      color: #4f4f4f
-    }
-
-    .toolbar {
-      border: 1px solid #ccc;
-    }
-
-    .text {
-      border: 1px solid #ccc;
-      height: 500px;
-    }
-  </style>
-
-  <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
-  <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
-  <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
-  <script>
-    function getUrlVars() {
-      var vars = [],
-              hash;
-      var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-      for (var i = 0; i < hashes.length; i++) {
-        hash = hashes[i].split('=');
-        vars.push(hash[0]);
-        vars[hash[0]] = hash[1];
-      }
-      return vars;
-    }
-    let id = getUrlVars()["courseId"];
-    let bull,bull2;
-    $(function (){
-    let m2b='<a class="nav-link liColor list-group-item" href="modifyClass.html?courseId='+id+'">信息管理</a>'
-    let m2b2='<a class="nav-link liColor list-group-item" href="Bulletinboard.html?courseId='+id+'">发布公告</a>';
-    let m2b3='<a class="nav-link liColor list-group-item" href="Bulletinboard2.html?courseId='+id+'">查看公告</a>';
-    document.getElementById("nav-item1").innerHTML = m2b ;
-    document.getElementById("nav-item2").innerHTML = m2b2 ;
-    document.getElementById("nav-item3").innerHTML = m2b3 ;
-    })
-
-    function getmessages() {
-      $.get("http://localhost:8080/teacher/sc?courseId="+id+"&agreed="+1, function (data, status) {
-        if (status !== "success") {
-          console.log("服务器或网络错误");
-          return;
+    <meta charset="UTF-8">
+    <title>学生管理</title>
+    <style>
+        .mainHeader {
+            padding-top: 1px;
+            padding-bottom: 1px;
+            background-color: white !important;
+            border-bottom: 5px solid #0b6cb8;
         }
-        bull = JSON.parse(data);
-        console.log(bull);
-        render();
-      });
 
-      $.get("http://localhost:8080/teacher/sc?courseId="+id+"&agreed="+0, function (data, status) {
-        if (status !== "success") {
-          console.log("服务器或网络错误");
-          return;
+        .liColor {
+            color: #4f4f4f
         }
-        bull2 = JSON.parse(data);
-        console.log(bull2);
-        render2();
-      });
-    }
-    $("#deny").click(function (){
-      let semail=$("#deny").val();
-      console.log(semail);
-      $.get("http://localhost:8080/teacher/agreeStudent?Semail="+semail+"&agreed="+0, function (data, status) {
-        console.log(data);
-        if (status !== "success") {
-          console.log("服务器或网络错误");
+
+        .toolbar {
+            border: 1px solid #ccc;
         }
-      })
-    })
-    $("#agree").click(function (){
-      let semail=$("#agree").val();
-      console.log(semail);
-      $.get("http://localhost:8080/teacher/agreeStudent?Semail="+semail+"&agreed="+1, function (data, status) {
-        console.log(data);
-        if (status !== "success") {
-          console.log("服务器或网络错误");
+
+        .text {
+            border: 1px solid #ccc;
+            height: 500px;
         }
-      })
-    })
-    var str='';
-    function render() {
-      str = "<table class='table'><thead>" +
-              "<tr>" +
-              "<th scope=\"col\">email</th>" +
-              "<th scope=\"col\">学生姓名</th>" +
-              "<th scope=\"col\">是否选上</th>" +
-              "<th scope=\"col\">教师操作</th>" +
-              "</tr>" +
-              "</thead>" +
-              "<tbody>";
-      if (bull.length === 0) {
-        console.log("没有更多新信息");
-        return;
-      }
-      bull.forEach((item) => {
-        str += `
-                <tr>
-                    <th>${item.email}</th>
-                    <th>${item.name}</th>
-                    <th>已选上</th>
-                    <th>
-                    <button type="button" class='btn btn-primary' id="deny" value="${item.email}">删除学生</button>
-                    </th>
-                </tr>
-                        `;
-      });
-    }
-    function render2() {
-      if (bull2.length === 0) {
-        console.log("没有更多新信息");
-        return;
-      }
-      bull2.forEach((item) => {
-        str += `
-                <tr>
-                    <th>${item.email}</th>
-                    <th>${item.name}</th>
-                    <th>未选上</th>
-                    <th>
-                    <button type="button" class='btn btn-primary' id="agree" value="${item.email}">同意选课</button>
-                    </th>
-                </tr>
-                        `;
-      });
-      str+="</tbody></table>";
-      section = document.getElementById("show");
-      section.innerHTML = str;
-    }
-  </script>
+    </style>
+
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
 </head>
 <body style="background-color: whitesmoke">
 <section id="header"></section>
 <div class="container-fluid">
-  <div class="row">
-    <div class="col-md-12" style="padding: 0">
-      <nav class="navbar navbar-expand-lg navbar-light bg-light mainHeader">
+    <div class="row">
+        <div class="col-md-12" style="padding: 0">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light mainHeader">
 
-        <div class="logoDiv" id="logoText">
-          学生管理
-        </div>
+                <div class="logoDiv" id="logoText">
+                    学生管理
+                </div>
 
-        <div class="collapse navbar-collapse" id="navbarText">
+                <div class="collapse navbar-collapse" id="navbarText">
 
-          <ul class="navbar-nav mr-auto">
+                    <ul class="navbar-nav mr-auto">
 
-          </ul>
+                    </ul>
 
-          <span class="navbar-nav">
+                    <span class="navbar-nav">
             <a class="nav-link navbar-item active" href="context.html">返回</a>
           </span>
+                </div>
+            </nav>
+
         </div>
-      </nav>
 
     </div>
 
-  </div>
+    <div class="row" style="min-height: 10px"></div>
 
-  <div class="row" style="min-height: 10px"></div>
+    <div class="row">
+        <div class="col-md-1">
+        </div>
+        <div class="col-md-2" style="padding-right: 0px">
 
-  <div class="row">
-    <div class="col-md-1">
+            <div class="row">
+
+                <div class="col-md-3"></div>
+
+                <div class="col-md-9">
+                    <div class="card">
+
+                        <ul class="nav nav-pills nav-fill flex-column">
+                            <li class="nav-item" id="nav-item1"></li>
+                            <li class="nav-item" id="nav-item2"></li>
+                            <li class="nav-item" id="nav-item3"></li>
+                            <li class="nav-item">
+                                <a class="nav-link active list-group-item">管理学生</a>
+                            </li>
+
+                        </ul>
+                    </div>
+
+
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="col-md-6" style="padding-left: 0px">
+            <div class="card">
+                <div class="card-header" style="background-color: white">
+                    <div class="row">
+                        <div class="col-md-3" style="font-size: 18px">信息管理</div>
+                    </div>
+                </div>
+
+                <div class="card-body" style="min-height: 300px">
+                    <section id="show"></section>
+                </div>
+
+
+                <div class="row" style="padding: 15px">
+
+                    <div class="col-md-1"></div>
+                    <div class="col-md-4" id="s">
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
     </div>
-    <div class="col-md-2" style="padding-right: 0px">
-
-      <div class="row">
-
-        <div class="col-md-3"></div>
-
-        <div class="col-md-9">
-          <div class="card">
-
-            <ul class="nav nav-pills nav-fill flex-column">
-              <li class="nav-item" id="nav-item1"></li>
-              <li class="nav-item" id="nav-item2"></li>
-              <li class="nav-item" id="nav-item3"></li>
-              <li class="nav-item">
-                <a class="nav-link active list-group-item">管理学生</a>
-              </li>
-
-            </ul>
-          </div>
-
-
-        </div>
-      </div>
-
-
-    </div>
-
-    <div class="col-md-6" style="padding-left: 0px">
-      <div class="card">
-        <div class="card-header" style="background-color: white">
-          <div class="row">
-            <div class="col-md-3" style="font-size: 18px">信息管理</div>
-          </div>
-        </div>
-
-        <div class="card-body" style="min-height: 300px">
-          <section id="show"></section>
-        </div>
-
-
-        <div class="row" style="padding: 15px">
-
-          <div class="col-md-1"></div>
-          <div class="col-md-4" id="s">
-          </div>
-
-        </div>
-      </div>
-
-    </div>
-  </div>
 
 </div>
 <section id="footer"></section>
-</body>
+
 
 <script>
-  getmessages();
-  render();
+    function getUrlVars() {
+        var vars = [],
+            hash;
+        var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+        for (var i = 0; i < hashes.length; i++) {
+            hash = hashes[i].split('=');
+            vars.push(hash[0]);
+            vars[hash[0]] = hash[1];
+        }
+        return vars;
+    }
+
+    let id = getUrlVars()["courseId"];
+    let bull = [], bull2 = [];
+    $(function () {
+        let m2b = '<a class="nav-link liColor list-group-item" href="modifyClass.html?courseId=' + id + '">信息管理</a>'
+        let m2b2 = '<a class="nav-link liColor list-group-item" href="Bulletinboard.html?courseId=' + id + '">发布公告</a>';
+        let m2b3 = '<a class="nav-link liColor list-group-item" href="Bulletinboard2.html?courseId=' + id + '">查看公告</a>';
+        document.getElementById("nav-item1").innerHTML = m2b;
+        document.getElementById("nav-item2").innerHTML = m2b2;
+        document.getElementById("nav-item3").innerHTML = m2b3;
+    })
+
+    function getmessages() {
+        $.get("http://localhost:8080/teacher/sc?courseId=" + id + "&agreed=" + 1, function (data, status) {
+            if (status !== "success") {
+                console.log("服务器或网络错误");
+                return;
+            }
+            bull = JSON.parse(data);
+            console.log(bull);
+            render();
+        });
+
+        $.get("http://localhost:8080/teacher/sc?courseId=" + id + "&agreed=" + 0, function (data, status) {
+            if (status !== "success") {
+                console.log("服务器或网络错误");
+                return;
+            }
+            bull2 = JSON.parse(data);
+            console.log(bull2);
+            render2();
+        });
+    }
+
+    var str = '';
+
+    function render() {
+        str = "<table class='table'><thead>" +
+            "<tr>" +
+            "<th scope=\"col\">email</th>" +
+            "<th scope=\"col\">学生姓名</th>" +
+            "<th scope=\"col\">是否选上</th>" +
+            "<th scope=\"col\">教师操作</th>" +
+            "</tr>" +
+            "</thead>" +
+            "<tbody>";
+        if (bull.length === 0) {
+            console.log("没有更多新信息");
+            return;
+        }
+        bull.forEach((item) => {
+            str += `
+                <tr>
+                    <th>${item.email}</th>
+                    <th>${item.name}</th>
+                    <th>已选上</th>
+                    <th>
+                    <button type="button" class='btn btn-primary' id="deny" onclick="deny()" value="${item.email}">删除学生</button>
+                    </th>
+                </tr>
+                        `;
+        });
+    }
+
+    function render2() {
+        if (bull2.length === 0) {
+            console.log("没有更多新信息");
+            return;
+        }
+        bull2.forEach((item) => {
+            str += `
+                <tr>
+                    <th>${item.email}</th>
+                    <th>${item.name}</th>
+                    <th>未选上</th>
+                    <th>
+                    <button type="button" class='btn btn-primary' id="agree" onclick="agree()" value="${item.email}">同意选课</button>
+                    </th>
+                </tr>
+                        `;
+        });
+        str += "</tbody></table>";
+        section = document.getElementById("show");
+        section.innerHTML = str;
+    }
+
+    getmessages();
+    render();
+
+    function deny() {
+        let semail = $("#deny").val();
+        console.log(semail);
+        $.get("http://localhost:8080/teacher/agreeStudent?Semail=" + semail + "&agreed=0", function (data, status) {
+            console.log(data);
+            if (status !== "success") {
+                console.log("服务器或网络错误");
+            } else {
+                location.reload()
+            }
+        })
+    }
+
+    function agree() {
+        let semail = $("#agree").val();
+        console.log(semail);
+        $.get("http://localhost:8080/teacher/agreeStudent?Semail=" + semail + "&agreed=1", function (data, status) {
+            console.log(data);
+            if (status !== "success") {
+                console.log("服务器或网络错误");
+            } else {
+                location.reload()
+            }
+        })
+    }
 </script>
+</body>
 </html>
