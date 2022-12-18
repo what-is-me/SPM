@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="EN" >
 
 <head>
     <title>公告栏</title>
@@ -34,6 +34,7 @@
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script>
         var url = document.location.toString();//获取url地址
+        console.log(url);
         var urlParmStr = url.slice(url.indexOf('?')+1);//获取问号后所有的字符串
         var arr = urlParmStr.split('&');//通过&符号将字符串分割转成数组
         var courseId = arr[0].split("=")[1];//获取数组中第一个参数
@@ -67,14 +68,14 @@
                 console.log("没有更多新信息");
                 return;
             }
-            for(let i=1;i<bull.board.length;i++){
+            console.log(bull.board)
+            for (let i = 0; i < bull.board.length; i++) {
                 str += `
-                        <div >
+                        <div>
                             <div class="text">${bull.board[i]}</div><br><br>
                         </div>
                         `;
             }
-
             console.log(str);
             section = document.getElementById("show");
             section.innerHTML = str;
@@ -127,6 +128,12 @@
                     <div class="card">
 
                         <ul class="nav nav-pills nav-fill flex-column">
+                            <li class="nav-item" id="nav-item1">
+
+                            </li>
+                            <li class="nav-item" id="nav-item2">
+
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link active list-group-item">查看公告</a>
                             </li>

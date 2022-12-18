@@ -187,7 +187,8 @@
                 $('#doexams').ajaxSubmit({
                     url: "student/check",
                     success: function (data) {
-                        alert("总分" + data["all"])
+                        alert("总分" + data["all"]);
+                        window.location.href="context.html";
                     },
                 });
                 return false;
