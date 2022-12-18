@@ -45,8 +45,10 @@
         $(function (){
         let m2b='<a class="nav-link liColor list-group-item" href="modifyClass.html?courseId='+courseId+'">信息管理</a>'
         let m2b2='<a class="nav-link liColor list-group-item" href="Bulletinboard.html?courseId='+courseId+'">发布公告</a>';
+        let m2b3='<a class="nav-link liColor list-group-item" href="ChooseCourse.html?courseId='+courseId+'">学生管理</a>';
         document.getElementById("nav-item1").innerHTML = m2b ;
         document.getElementById("nav-item2").innerHTML = m2b2 ;
+        document.getElementById("nav-item3").innerHTML = m2b3 ;
         });
         $.get(userurlget, function (data, status) {
             if (status !== "success") {
@@ -69,19 +71,20 @@
             }
 
         function render() {
-            var str = "";
+            var str = "<table class='table'><tbody>";
             if (bull === null) {
                 console.log("没有更多新信息");
                 return;
             }
-            console.log(bull.board)
             for (let i = 0; i < bull.board.length; i++) {
+                var x=bull.board[i].split(":");
                 str += `
-                        <div>
-                            <div class="text">${bull.board[i]}</div><br><br>
-                        </div>
+                        <tr>
+                            <th><div class="text" style="height: auto"><div style="margin: 20px;">${x[0]}<br>班级${CID}发布公告:<br></div><div class="text" style="height: 200px;margin: 20px;background-color:rgba(11,108,184,0.5);border-color: #0b6cb8;border-width: 1px;border-radius: 3%"> ${x[1]}</div></div></th>
+                        </tr>
                         `;
             }
+            str+=`</tbody></table>`;
             console.log(str);
             section = document.getElementById("show");
             section.innerHTML = str;
@@ -134,15 +137,12 @@
                         <div class="card">
 
                             <ul class="nav nav-pills nav-fill flex-column">
-                                <li class="nav-item" id="nav-item1">
-
-                                </li>
-                                <li class="nav-item" id="nav-item2">
-
-                                </li>
+                                <li class="nav-item" id="nav-item1"></li>
+                                <li class="nav-item" id="nav-item2"></li>
                                 <li class="nav-item">
                                     <a class="nav-link active list-group-item">查看公告</a>
                                 </li>
+                                <li class="nav-item" id="nav-item3"></li>
                             </ul>
                         </div>
 
@@ -161,7 +161,7 @@
                         </div>
                     </div>
 
-                    <div class="card-body" style="min-height: 1000px">
+                    <div class="card-body" style="min-height: 600px">
                         <div style="padding: 8px 0; color: #ccc"></div>
                         <div id="div1" class="toolbar">
                         </div>

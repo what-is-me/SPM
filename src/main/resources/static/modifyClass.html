@@ -34,8 +34,10 @@
             let id = getUrlVars()["courseId"];
             let m2b='<a class="nav-link liColor list-group-item" href="Bulletinboard.html?courseId='+id+'">发布公告</a>'
             let m2b2='<a class="nav-link liColor list-group-item" href="Bulletinboard2.html?courseId='+id+'">查看公告</a>';
+            let m2b3='<a class="nav-link liColor list-group-item" href="ChooseCourse.html?courseId='+id+'">学生管理</a>';
             document.getElementById("nav-item1").innerHTML = m2b ;
             document.getElementById("nav-item2").innerHTML = m2b2 ;
+            document.getElementById("nav-item3").innerHTML = m2b3 ;
             /*加载所有信息*/
             let url = "http://localhost:8080/course/byId?courseId=" + id;
             $.get(url, function (data) {
@@ -188,13 +190,9 @@
                             <li class="nav-item">
                                 <a class="nav-link active list-group-item">信息管理</a>
                             </li>
-                            <li class="nav-item" id="nav-item1">
-
-                            </li>
-
-                            <li class="nav-item" id="nav-item2">
-
-                            </li>
+                            <li class="nav-item" id="nav-item1"></li>
+                            <li class="nav-item" id="nav-item2"></li>
+                            <li class="nav-item" id="nav-item3"></li>
                         </ul>
                     </div>
 

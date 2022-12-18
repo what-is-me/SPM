@@ -63,19 +63,20 @@
         }
 
         function render() {
-            var str = "";
+            var str = "<table class='table'><tbody>";
             if (bull === null) {
                 console.log("没有更多新信息");
                 return;
             }
-            console.log(bull.board)
             for (let i = 0; i < bull.board.length; i++) {
+                var x=bull.board[i].split(":");
                 str += `
-                        <div>
-                            <div class="text">${bull.board[i]}</div><br><br>
-                        </div>
+                        <tr>
+                            <th><div class="text" style="height: auto"><div style="margin: 20px;">${x[0]}<br>班级${CID}发布公告:<br></div><div class="text" style="height: 200px;margin: 20px;background-color:rgba(11,108,184,0.5);border-color: #0b6cb8;border-width: 1px;border-radius: 3%"> ${x[1]}</div></div></th>
+                        </tr>
                         `;
             }
+            str+=`</tbody></table>`;
             console.log(str);
             section = document.getElementById("show");
             section.innerHTML = str;

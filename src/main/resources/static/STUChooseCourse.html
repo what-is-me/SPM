@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>选择课程</title>
+  <style>
+    .mainHeader {
+      padding-top: 1px;
+      padding-bottom: 1px;
+      background-color: white !important;
+      border-bottom: 5px solid #0b6cb8;
+    }
+
+    .liColor {
+      color: #4f4f4f
+    }
+
+    .toolbar {
+      border: 1px solid #ccc;
+    }
+
+    .text {
+      border: 1px solid #ccc;
+      height: 500px;
+    }
+  </style>
+
+  <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+  <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script>
+
+    let bull;
+
+    function choose(courseId){
+      $.get("http://localhost:8080/student/select-course?courseId="+courseId,function (data,status){
+        if (data === "true"){
+          document.getElementById(courseId).innerText="选课成功"
+        }
+      })
+      return ;
+    }
+
+    function getmessages() {
+      $.get("http://localhost:8080/course/", function (data, status) {
+        if (status !== "success") {
+          console.log("服务器或网络错误");
+          return;
+        }
+        bull = JSON.parse(data);
+        render();
+      });
+    }
+
+    function render() {
+      var str = "";
+      if (bull.length === 0) {
+        console.log("没有更多新信息");
+        return;
+      }
+      bull.forEach((item) => {
+        str += `
+                        <div style="margin-top: 25px">
+                            <span class="text">课程编号：</span>
+                            <span class="text">${item.courseId}</span>
+                             <button type="button" class="btn btn-primary" id="${item.courseId}" style="float: right"
+                                    onclick="choose(${item.courseId})">选课</button>
+                        </div>
+                        `;
+      });
+      section = document.getElementById("show");
+      section.innerHTML = str;
+    }
+  </script>
+
+</head>
+<body style="background-color: whitesmoke">
+<section id="header"></section>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12" style="padding: 0">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light mainHeader">
+
+        <div class="logoDiv" id="logoText">课程列表</div>
+
+        <div class="collapse navbar-collapse" id="navbarText">
+
+          <ul class="navbar-nav mr-auto">
+
+          </ul>
+
+          <span class="navbar-nav">
+                                <a class="nav-link navbar-item active" href="context.html">返回</a>
+
+                            </span>
+        </div>
+      </nav>
+
+    </div>
+
+  </div>
+
+  <div class="row" style="min-height: 10px"></div>
+  <div class="row">
+    <div class="col-md-1">
+    </div>
+    <div class="col-md-6" style="padding-left: 20%">
+      <div class="card">
+        <div class="card-header" style="background-color: white">
+          <div class="row">
+            <div class="col-md-3" style="font-size: 18px">课程列表</div>
+          </div>
+        </div>
+
+        <div class="card-body" style="min-height: 1000px">
+          <div style="padding: 8px 0; color: #ccc"></div>
+          <div id="div1" class="toolbar">
+          </div>
+          <section id="show"></section>
+
+        </div>
+
+
+        <div class="row" style="padding: 15px">
+
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+</div>
+<section id="footer"></section>
+</body>
+
+<script>
+  getmessages();
+  render();
+</script>
+</html>

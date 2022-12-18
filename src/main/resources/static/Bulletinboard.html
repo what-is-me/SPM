@@ -43,8 +43,10 @@
         $(function (){
         let m2b='<a class="nav-link liColor list-group-item" href="modifyClass.html?courseId='+courseId+'">信息管理</a>'
         let m2b2='<a class="nav-link liColor list-group-item" href="Bulletinboard2.html?courseId='+courseId+'">查看公告</a>';
+        let m2b3='<a class="nav-link liColor list-group-item" href="ChooseCourse.html?courseId='+courseId+'">学生管理</a>';
         document.getElementById("nav-item1").innerHTML = m2b ;
         document.getElementById("nav-item2").innerHTML = m2b2 ;
+        document.getElementById("nav-item3").innerHTML = m2b3 ;
         });
         function postmessage() {
             console.log(CID);
@@ -66,6 +68,8 @@
                     window.location.reload();
                 } else {
                     console.log(data);
+                    alert("发布成功！")
+                    window.location.reload();
                 }
             })
         }
@@ -133,15 +137,12 @@
                     <div class="card">
 
                         <ul class="nav nav-pills nav-fill flex-column">
-                            <li class="nav-item" id="nav-item1">
-
-                            </li>
+                            <li class="nav-item" id="nav-item1"></li>
                             <li class="nav-item">
                                 <a class="nav-link active list-group-item">发布公告</a>
                             </li>
-                            <li class="nav-item" id="nav-item2">
-
-                            </li>
+                            <li class="nav-item" id="nav-item2"></li>
+                            <li class="nav-item" id="nav-item3"></li>
                         </ul>
                     </div>
 
@@ -163,7 +164,7 @@
                     <div style="padding: 8px 0; color: #ccc"></div>
                     <div id="div1" class="toolbar">
                     </div>
-                    <textarea id="boa" name="txt" rows="40" cols="92"></textarea>
+                    <textarea id="boa" name="txt" rows="20" cols="105"></textarea>
                 </div>
 
 
