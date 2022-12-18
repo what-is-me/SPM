@@ -2,7 +2,7 @@
 <html lang="EN" >
 <head>
     <meta charset="UTF-8">
-    <title>查看课程</title>
+    <title>学生成绩查询</title>
     <style>
         .mainHeader {
             padding-top: 1px;
@@ -21,50 +21,43 @@
 
         $(function () {
 
-
             let urlcurrent="http://localhost:8080/current-user";
-            let current_userID;
+            let current_user;
             $.get(urlcurrent,function (data){
                 let current = JSON.parse(data);
-                if(isNaN(parseInt(current.courseId))){
-                    let str=`<h4>你还没有录入班级信息，请联系辅导员</h4>`;
-                    document.getElementById("class").innerHTML=str;
-                    return false;
-                }
-                current_userID=current.courseId;
+                current_user=current.email;
 
-                let url = "http://localhost:8080/course/byId?courseId="+parseInt(current_userID);
-                $.get(url, function (data) {
-                    let a = JSON.parse(data);
-                    if(typeof a.src === 'undefined'){
-                        let str=`<h4>暂无相关班级信息，请等待教师发布</h4>`;
-                         document.getElementById("class").innerHTML=str;
-                         return false;
+                let url = "http://localhost:8080/student/scores?email="+current_user;
+
+                $.post(url, function (data) {
+                    console.log(data);
+                    if (data === "[]") {
+                        let str = `<h1 style="padding-top: 30px">暂无相关成绩信息</h1>`;
+                        document.getElementById("grades").innerHTML = str;
+                        return false;
                     }else {
-                    document.getElementById("class").innerHTML = JSON.parse(data).src;
+
+                    let str = `<table align="center" border="0" valign="center" style="text-align: center" cellspacing="0"
+                       cellpadding="25">
+                    <tr>
+                        <th>试卷ID</th>
+                        <th>成绩</th>
+                        <th>试卷名称</th>
+                    </tr>`;
+                    let grades = JSON.parse(data);
+                    grades.forEach((item) => {
+                        str += `<tr>
+                        <td>${item.eid}</td>
+                        <td> ${item.score}</td>
+                        <td>${item.name}</td>
+                    </tr>`;
+
+                    });
+                    str += `</table><div style="clear:both "></div>`;
+                    document.getElementById("grades").innerHTML = str;
                     return false;}
                 });
-
-             })
-
-            /*从request中获取参数*/
-            function getUrlVars() {
-                var vars = [],
-                    hash;
-                var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-                for (var i = 0; i < hashes.length; i++) {
-                    hash = hashes[i].split('=');
-                    vars.push(hash[0]);
-                    vars[hash[0]] = hash[1];
-                }
-                return vars;
-            }
-
-            var id = getUrlVars()["courseID"];
-            /*加载班级信息*/
-
-
-
+            })
         });
 
     </script>
@@ -79,7 +72,7 @@
             <nav class="navbar navbar-expand-lg navbar-light bg-light mainHeader">
 
                 <div class="logoDiv" id="logoText">
-                    查看班级信息
+                    成绩查询
                 </div>
 
                 <div class="collapse navbar-collapse" id="navbarText">
@@ -114,7 +107,7 @@
 
                         <ul class="nav nav-pills nav-fill flex-column">
                             <li class="nav-item">
-                                <a class="nav-link active list-group-item">班级信息</a>
+                                <a class="nav-link active list-group-item">学生成绩</a>
                             </li>
                         </ul>
                     </div>
@@ -131,7 +124,8 @@
 
                 </div>
                 <div class="card-body" style="min-height: 300px">
-                    <div disabled="true" align="center" class="class_details" id="class">
+                    <div disabled="true" align="center" class="class_details" id="grades">
+
                     </div>
                 </div>
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="EN" >
 
 <head>
     <title>公告栏</title>
@@ -34,6 +34,7 @@
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script>
         var url = document.location.toString();//获取url地址
+            console.log(url);
         var urlParmStr = url.slice(url.indexOf('?')+1);//获取问号后所有的字符串
         var arr = urlParmStr.split('&');//通过&符号将字符串分割转成数组
         var courseId = arr[0].split("=")[1];//获取数组中第一个参数
@@ -41,6 +42,12 @@
         var userurlget = "current-user";
         var urlget = "course/byId?courseId="
         var obj;
+        $(function (){
+        let m2b='<a class="nav-link liColor list-group-item" href="modifyClass.html?courseId='+courseId+'">信息管理</a>'
+        let m2b2='<a class="nav-link liColor list-group-item" href="Bulletinboard.html?courseId='+courseId+'">发布公告</a>';
+        document.getElementById("nav-item1").innerHTML = m2b ;
+        document.getElementById("nav-item2").innerHTML = m2b2 ;
+        });
         $.get(userurlget, function (data, status) {
             if (status !== "success") {
                 console.log("服务器或网络错误");
@@ -70,12 +77,11 @@
             console.log(bull.board)
             for (let i = 0; i < bull.board.length; i++) {
                 str += `
-                        <div >
+                        <div>
                             <div class="text">${bull.board[i]}</div><br><br>
                         </div>
                         `;
             }
-
             console.log(str);
             section = document.getElementById("show");
             section.innerHTML = str;
@@ -128,12 +134,11 @@
                         <div class="card">
 
                             <ul class="nav nav-pills nav-fill flex-column">
-                                <li class="nav-item">
-                                    <a class="nav-link liColor list-group-item" href="modifyClass.html">信息管理</a>
-                                </li>
+                                <li class="nav-item" id="nav-item1">
 
-                                <li class="nav-item">
-                                    <a class="nav-link liColor list-group-item"  href="Bulletinboard.html">发布公告</a>
+                                </li>
+                                <li class="nav-item" id="nav-item2">
+
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link active list-group-item">查看公告</a>

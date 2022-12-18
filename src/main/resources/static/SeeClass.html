@@ -45,20 +45,28 @@
             }
 
             function render() {
-                var str = "";
+                var str = "<table class='table'><thead>" +
+                    "<tr>" +
+                    "<th scope=\"col\">班级编号</th>" +
+                    "<th scope=\"col\">教师操作</th>" +
+                    "</tr>" +
+                    "</thead>" +
+                    "<tbody>";
                 if (bull.length === 0) {
                     console.log("没有更多新信息");
                     return;
                 }
                 bull.forEach((item) => {
                     str += `
-                        <div >
-                            <span class="text">课程编号：</span>
-                            <span class="text">${item.courseId}</span>
-                            <a href="/modifyClass.html?courseId=${item.courseId}" style="float: right">查看/编辑</a>
-                        </div>
+                        <tr>
+                            <th>${item.courseId}</th>
+                            <th>
+                            <a href="/modifyClass.html?courseId=${item.courseId}">查看/编辑</a>
+                            </th>
+                        </tr>
                         `;
                 });
+                str+="</tbody></table>";
                 section = document.getElementById("show");
                 section.innerHTML = str;
             }

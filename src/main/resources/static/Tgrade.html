@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="EN" >
+<html lang="EN">
 <head>
     <meta charset="UTF-8">
-    <title>查看课程</title>
+    <title>教师成绩查询</title>
     <style>
         .mainHeader {
             padding-top: 1px;
@@ -21,49 +21,55 @@
 
         $(function () {
 
-
-            let urlcurrent="http://localhost:8080/current-user";
-            let current_userID;
-            $.get(urlcurrent,function (data){
-                let current = JSON.parse(data);
-                if(isNaN(parseInt(current.courseId))){
-                    let str=`<h4>你还没有录入班级信息，请联系辅导员</h4>`;
-                    document.getElementById("class").innerHTML=str;
+            $("#search").click(function () {
+                let courseID = $("#courseID").val();
+                if (courseID === "") {
+                    alert("课程编号为空");
                     return false;
                 }
-                current_userID=current.courseId;
 
-                let url = "http://localhost:8080/course/byId?courseId="+parseInt(current_userID);
+
+                let url = "http://localhost:8080/teacher/students_score?courseId=" + parseInt(courseID);
+
                 $.get(url, function (data) {
-                    let a = JSON.parse(data);
-                    if(typeof a.src === 'undefined'){
-                        let str=`<h4>暂无相关班级信息，请等待教师发布</h4>`;
-                         document.getElementById("class").innerHTML=str;
-                         return false;
-                    }else {
-                    document.getElementById("class").innerHTML = JSON.parse(data).src;
-                    return false;}
+                    console.log(data)
+                    if (data === "[]") {
+                        let str = `<h1 style="padding-top: 30px">该班级暂无相关成绩信息</h1>`;
+                        document.getElementById("grades").innerHTML = str;
+                        return false;
+                    } else {
+
+                        let str = `<table align="center" border="0" valign="center" style="text-align: center" cellspacing="0"
+                       cellpadding="5" >
+                    <tr>
+                        <th>班级编号</th>
+                        <th>试卷名称</th>
+                        <th>学生姓名</th>
+                        <th>学生邮箱</th>
+                        <th>学生成绩</th>
+                        <th>教师邮箱</th>
+                    </tr>`;
+                        let grades = JSON.parse(data);
+                        grades.forEach((item) => {
+                            str += `<tr>
+                        <td>${item.courseId}</td>
+                        <td> ${item.exam_name}</td>
+                        <td>${item.stu_name}</td>
+                        <td>${item.stu_email}</td>
+                        <td>${item.score}</td>
+                        <td>${item.teacher_email}</td>
+                    </tr>`;
+
+                        });
+                        str += `</table><div style="clear:both "></div>`;
+                        document.getElementById("grades").innerHTML = str;
+                        return false;
+                    }
+
                 });
 
-             })
 
-            /*从request中获取参数*/
-            function getUrlVars() {
-                var vars = [],
-                    hash;
-                var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-                for (var i = 0; i < hashes.length; i++) {
-                    hash = hashes[i].split('=');
-                    vars.push(hash[0]);
-                    vars[hash[0]] = hash[1];
-                }
-                return vars;
-            }
-
-            var id = getUrlVars()["courseID"];
-            /*加载班级信息*/
-
-
+            });
 
         });
 
@@ -71,7 +77,7 @@
 
 
 </head>
-<body  style="background-color: whitesmoke">
+<body style="background-color: whitesmoke">
 <section id="header"></section>
 <div class="container-fluid">
     <div class="row">
@@ -79,7 +85,7 @@
             <nav class="navbar navbar-expand-lg navbar-light bg-light mainHeader">
 
                 <div class="logoDiv" id="logoText">
-                    查看班级信息
+                    查询学生成绩
                 </div>
 
                 <div class="collapse navbar-collapse" id="navbarText">
@@ -90,7 +96,7 @@
 
                     <span class="navbar-nav">
                                 <a class="nav-link navbar-item active" href="context.html">返回</a>
-    
+
                             </span>
                 </div>
             </nav>
@@ -114,7 +120,7 @@
 
                         <ul class="nav nav-pills nav-fill flex-column">
                             <li class="nav-item">
-                                <a class="nav-link active list-group-item">班级信息</a>
+                                <a class="nav-link active list-group-item">查询学生成绩</a>
                             </li>
                         </ul>
                     </div>
@@ -131,7 +137,14 @@
 
                 </div>
                 <div class="card-body" style="min-height: 300px">
-                    <div disabled="true" align="center" class="class_details" id="class">
+                    <div id="query" align="center">
+                        <input type="texe" placeholder="请输入班级编号" id="courseID">
+                        <input type="button" value="查询" id="search">
+
+                    </div>
+                    <div style="padding-top: 20px" disabled="true" align="center" class="class_details" id="grades">
+                        <h1 style="padding-top: 80px">欢迎使用成绩查询功能！</h1>
+
                     </div>
                 </div>
 

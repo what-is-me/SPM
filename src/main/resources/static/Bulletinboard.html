@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="EN" >
 
 <head>
     <title>公告栏</title>
@@ -39,17 +39,22 @@
         var courseId = arr[0].split("=")[1];//获取数组中第一个参数
         var userurlget = "current-user";
         var urlpos = "/course/addBoard";
-        var CID;
-        CID=courseId;
-        console.log(CID);
+        var CID=courseId;
+        $(function (){
+        let m2b='<a class="nav-link liColor list-group-item" href="modifyClass.html?courseId='+courseId+'">信息管理</a>'
+        let m2b2='<a class="nav-link liColor list-group-item" href="Bulletinboard2.html?courseId='+courseId+'">查看公告</a>';
+        document.getElementById("nav-item1").innerHTML = m2b ;
+        document.getElementById("nav-item2").innerHTML = m2b2 ;
+        });
         function postmessage() {
+            console.log(CID);
             let str = document.getElementById("boa").value;//$("#mess").val();
             console.log(str);
             if (str.length === 0) {
                 console.log("输入栏不能空");
                 return;
             }
-            $.post(urlpos,{Courseid:CID,data:str}, function (data, status) {
+            $.post(urlpos,{courseId:CID,data:str}, function (data, status) {
                 console.log(data + "\n" + status);
                 if (status !== "success") {
                     console.log("服务器或网络错误");
@@ -71,11 +76,10 @@
                     console.log("服务器或网络错误");
                     return;
                 }
-
                 obj = JSON.parse(data);
                 if(obj.type=="student"){
                     confirm('您没有权限发布公告');
-                    window.location.href="Bulletin board2.html";
+                    window.location.href="Bulletinboard2.html";
                 }
             });
         }
@@ -129,14 +133,14 @@
                     <div class="card">
 
                         <ul class="nav nav-pills nav-fill flex-column">
-                            <li class="nav-item">
-                                <a class="nav-link liColor list-group-item" href="modifyClass.html">信息管理</a>
+                            <li class="nav-item" id="nav-item1">
+
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link active list-group-item">发布公告</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link liColor list-group-item" href="Bulletinboard2.html">查看公告</a>
+                            <li class="nav-item" id="nav-item2">
+
                             </li>
                         </ul>
                     </div>

@@ -19,7 +19,6 @@
     <script>
 
         $(function () {
-
             /*从request中获取Bid参数*/
             function getUrlVars() {
                 var vars = [],
@@ -32,177 +31,100 @@
                 }
                 return vars;
             }
-
             let id = getUrlVars()["courseId"];
+            let m2b='<a class="nav-link liColor list-group-item" href="Bulletinboard.html?courseId='+id+'">发布公告</a>'
+            let m2b2='<a class="nav-link liColor list-group-item" href="Bulletinboard2.html?courseId='+id+'">查看公告</a>';
+            document.getElementById("nav-item1").innerHTML = m2b ;
+            document.getElementById("nav-item2").innerHTML = m2b2 ;
             /*加载所有信息*/
             let url = "http://localhost:8080/course/byId?courseId=" + id;
             $.get(url, function (data) {
-
-               /* {str += '<table style="text-align: center;margin-top: 10px"  cellpadding="0" cellSpacing="20">';
-                let item = JSON.parse(data);
-                str += `<tr>
-                                        <td>班级号：
-                                        </td>
-                                        <td id="class_id">
-                                          <div contenteditable="true">${item.courseId}</div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>班主任：
-                                        </td>
-                                        <td >
-                                         <div contenteditable="true">${item.teacher.name}</div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>班主任邮箱：
-                                        </td>
-                                        <td >
-                                           <div contenteditable="true">${item.teacher.email}</div>                                        </td>
-                                    </tr>`;
-                str += '</table>';
-                str+='<br>';
-
-                str1 += '<table style="text-align: center;margin-top: 10px" cellpadding="0" cellSpacing="20">';
-                str1 += `<tr>
-                                        <td>实践主题：
-                                        </td>
-                                        <td id="class_id">
-                                          <div contenteditable="true">USST</div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>负责人：
-                                        </td>
-                                        <td >
-                                            <div contenteditable="true">S</div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>实践目标
-                                        </td>
-                                        <td >
-                                         <div contenteditable="true">S</div>
-                                        </td>
-                                    </tr>`;
-                str1 += '</table>';
-                str1+='<br>';
-
-                str2 += '<table style="text-align: center;margin-top: 10px" cellpadding="0" cellSpacing="20">';
-                str2 += `<tr>
-                                        <td>团队ID：
-                                        </td>
-                                        <td >
-                                          <div contenteditable="true">USST</div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>团队负责人：
-                                        </td>
-                                        <td >
-                                            <div contenteditable="true">张三</div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>团队成员：
-                                        </td>
-                                        <td >
-                                         <div contenteditable="true">张三、李四、王五</div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>团队宗旨：
-                                        </td>
-                                        <td >
-                                           <div contenteditable="true">越来越好！</div>                                        </td>
-                                    </tr>`;
-                str2 += '</table>';
-                str2+='<br>';
-                document.getElementById("class").innerHTML = str+str1+str2;}*/
                     let str = JSON.parse(data).src;
-                    if (str.length === 0){
-                        str = '<table style="text-align: center;margin-top: 10px"  cellpadding="0" cellSpacing="20">';
+                    if (typeof str === 'undefined' || str.length===0 ){
+                        str =`<p align="center"><b>班级信息</b></p>`
+                        str += '<table class="table"><tbody>';
                             str += `<tr>
-                                        <td>班级号：
-                                        </td>
-                                        <td id="class_id">
-                                          <div contenteditable="true"> </div>
-                                        </td>
+                                        <th>班级号：
+                                        </th>
+                                        <th id="class_id">
+                                        <div contenteditable="false">${id}</div>
+                                        </th>
                                     </tr>
                                     <tr>
-                                        <td>班主任：
-                                        </td>
-                                        <td >
-                                         <div contenteditable="true"> </div>
-                                        </td>
+                                        <th>班主任：
+                                        </th>
+                                        <th >
+                                        <div contenteditable="true" style="width:500px">?</div>
+                                        </th>
                                     </tr>
                                     <tr>
-                                        <td>班主任邮箱：
-                                        </td>
-                                        <td >
-                                           <div contenteditable="true"> </div>                                        </td>
+                                        <th>班主任邮箱：
+                                        </th>
+                                        <th>
+                                        <div contenteditable="true" style="width:500px">?</div>
+                                        </th>
                                     </tr>`;
-                            str += '</table>';
+                            str += '</tbody></table>';
                             str+='<br>';
 
-                            str += '<table style="text-align: center;margin-top: 10px" cellpadding="0" cellSpacing="20">';
+                            str += '<table class="table"><tbody>';
                             str += `<tr>
-                                        <td>实践主题：
-                                        </td>
-                                        <td id="class_id">
-                                          <div contenteditable="true">USST</div>
-                                        </td>
+                                        <th scope="row">实践主题：
+                                        </th>
+                                        <th id="class_id">
+                                          <div contenteditable="true" style="width:500px">?</div>
+                                        </th>
                                     </tr>
                                     <tr>
-                                        <td>负责人：
-                                        </td>
-                                        <td >
-                                            <div contenteditable="true">S</div>
-                                        </td>
+                                        <th scope="row">实践负责人：
+                                        </th>
+                                        <th>
+                                            <div contenteditable="true" style="width:500px">?</div>
+                                        </th>
                                     </tr>
                                     <tr>
-                                        <td>实践目标
-                                        </td>
-                                        <td >
-                                         <div contenteditable="true">S</div>
-                                        </td>
+                                        <th scope="row">实践目标
+                                        </th>
+                                        <th>
+                                         <div contenteditable="true" style="width:500px">?</div>
+                                        </th>
                                     </tr>`;
-                            str += '</table>';
+                            str += '</tbody></table>';
                             str+='<br>';
 
-                            str += '<table style="text-align: center;margin-top: 10px" cellpadding="0" cellSpacing="20">';
+                            str += '<table class="table">';
                             str += `<tr>
-                                        <td>团队ID：
-                                        </td>
-                                        <td >
-                                          <div contenteditable="true">USST</div>
-                                        </td>
+                                        <th scope="row">团队ID：
+                                        </th>
+                                        <th>
+                                          <div contenteditable="true" style="width:500px">?</div>
+                                        </th>
                                     </tr>
                                     <tr>
-                                        <td>团队负责人：
-                                        </td>
-                                        <td >
-                                            <div contenteditable="true">张三</div>
-                                        </td>
+                                        <th scope="row">团队负责人：
+                                        </th>
+                                        <th>
+                                            <div contenteditable="true" style="width:500px">?</div>
+                                        </th>
                                     </tr>
                                     <tr>
-                                        <td>团队成员：
-                                        </td>
-                                        <td >
-                                         <div contenteditable="true">张三、李四、王五</div>
-                                        </td>
+                                        <th scope="row">团队成员：
+                                        </th>
+                                        <th>
+                                         <div contenteditable="true" style="width:500px">?</div>
+                                        </th>
                                     </tr>
                                     <tr>
-                                        <td>团队宗旨：
-                                        </td>
-                                        <td >
-                                           <div contenteditable="true">越来越好！</div>                                        </td>
+                                        <th scope="row">团队宗旨：
+                                        </th>
+                                        <th>
+                                           <div contenteditable="true" style="width:500px">?</div>
+                                        </th>
                                     </tr>`;
                             str += '</table>';
                             str+='<br>';
                     }
                     document.getElementById("class").innerHTML = str ;
-
                 return false;
             });
 
@@ -239,9 +161,8 @@
                     </ul>
 
                     <span class="navbar-nav">
-                                <a class="nav-link navbar-item active" href="Tcontext.html">返回</a>
-    
-                            </span>
+                                <a class="nav-link navbar-item active" href="context.html">返回</a>
+                    </span>
                 </div>
             </nav>
 
@@ -267,13 +188,12 @@
                             <li class="nav-item">
                                 <a class="nav-link active list-group-item">信息管理</a>
                             </li>
+                            <li class="nav-item" id="nav-item1">
 
-                            <li class="nav-item">
-                                <a class="nav-link liColor list-group-item" href="Bulletinboard.html">发布公告</a>
                             </li>
 
-                            <li class="nav-item">
-                                <a class="nav-link liColor list-group-item" href="Bulletinboard2.html">查看公告</a>
+                            <li class="nav-item" id="nav-item2">
+
                             </li>
                         </ul>
                     </div>
@@ -294,8 +214,7 @@
                 </div>
 
                 <div class="card-body" style="min-height: 300px">
-                    <div align="center" class="class_details" id="class">
-
+                    <div align="left" class="class_details" id="class">
                     </div>
                 </div>
 
