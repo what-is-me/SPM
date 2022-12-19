@@ -133,6 +133,7 @@
     $("#submitexam").hide()
     $.get("http://localhost:8080/student/exams", function (data) {
         data = JSON.parse(data)
+        console.log(data);
         var time=new Date;
         time=time.toLocaleString();
         time=time.replaceAll('/','-');
@@ -149,7 +150,12 @@
             "<tbody></tbody></table>");
         for (const exam of data) {
             if(time<exam['end'])
+            {
+            if(time>exam['begin'])
             $exam.append("<tr><th scope='row'><input type='radio' name='chooseexam' id='chooseexam' value='"+exam['eid']+"'></th>"+"<td>" + exam["name"] + "</td>"+"<td>" + exam["cid"] + "</td>"+"<td>" + exam["begin"] + "</td>"+"<td>" + exam["end"]+"</td>")
+            else
+            $exam.append("<tr><th scope='row'></th>"+"<td>" + exam["name"] + "</td>"+"<td>" + exam["cid"] + "</td>"+"<td>" + exam["begin"] + "</td>"+"<td>" + exam["end"]+"</td>")
+            }
             //$("."+exam['eid']).hide()
         }
         $("#exams").append($exam)
